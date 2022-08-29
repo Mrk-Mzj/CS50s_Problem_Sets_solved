@@ -1,12 +1,26 @@
 
+from ast import match_case
+
+
 def main():
 
     # asking and assigning a float value to variables
     x = float(input("What's X? "))
     y = float(input("What's Y? "))
+    operation = input('What to do? ( + - * / ) ')
 
-    # in case of adding
-    result = cleaned(x+y)
+    # calculations
+    match operation:
+        case '+':
+            result = cleaned(x+y)
+        case '-':
+            result = cleaned(x-y)
+        case '*':
+            result = cleaned(x*y)
+        case '/':
+            result = cleaned(x/y)
+        case _:
+            result = "wrong, because it was not an operation!"
 
     # printing the result
     print(f'\n Result is: {result} \n')
