@@ -1,6 +1,7 @@
 
 # słownik
 dictionary = {
+    
     'Hermiona': 'Gryffindor', 
     'Harry':    'Gryffindor', 
     'Ron':      'Gryffindor',
