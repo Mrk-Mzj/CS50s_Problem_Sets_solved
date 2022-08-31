@@ -1,5 +1,5 @@
 
-# słownik
+# słownik, czyli zbiór par
 dictionary = {
     
     'Hermiona': 'Gryffindor', 
@@ -10,10 +10,12 @@ dictionary = {
 
 
 # drukowanie pojedynczej pary klucz-wartość
-print (f'\n','Draco należy do', dictionary['Draco'], '\n')
+print ('\n','Draco należy do', dictionary['Draco'], '\n')
 
 
 # drukowanie wszytskich par klucz-wartość
 for address in dictionary:
     print (address,'należy do',dictionary[address])
+
+print()
 

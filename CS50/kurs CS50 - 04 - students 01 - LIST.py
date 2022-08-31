@@ -6,16 +6,18 @@ list = ['Hermiona', 'Harry', 'Ron']
 # a) 
 count = 0
 for student in range(len(list)):
-    print(f'Meaow a) {list[count]}')
+    print ('Meaow a)', list[count])
     count += 1
+print()
 
 
 # b) bez countera; student jest integerem
 for student in range(len(list)):
-    print(f'Meaow b) {list[student]}')
+    print ('Meaow b)', list[student])
+print()
 
 
 # c) najkrócej; student jest stringiem
 for student in list:
-    print(f'Meaow c) {student}')
-
+    print ('Meaow c)', student)
+print()
