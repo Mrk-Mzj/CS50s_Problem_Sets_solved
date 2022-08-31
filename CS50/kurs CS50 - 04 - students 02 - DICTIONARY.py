@@ -1,5 +1,7 @@
 
-# słownik, czyli zbiór par
+# słownik, czyli {'zbiór':'par'}
+# dictionary = {'Hermiona':'Gryffindor', 'Harry':'Gryffindor', 'Ron':'Gryffindor', 'Draco':'Slytherin'}
+
 dictionary = {
     
     'Hermiona': 'Gryffindor', 
