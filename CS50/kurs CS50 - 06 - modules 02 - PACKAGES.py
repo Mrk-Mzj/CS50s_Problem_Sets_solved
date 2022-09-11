@@ -1,6 +1,6 @@
 import cowsay
 import sys
-
+print(dir(cowsay))
 # instalujemy pakiet Cowsay (zewnętrzny folder z modułami) poleceniem: "pip install cowsay". Więcej ciekawych pakietów na PyPI.org
 # uruchamiamy z konsoli: python "kurs CS50 - 06 - modules 02 - PACKAGES.py"
 
