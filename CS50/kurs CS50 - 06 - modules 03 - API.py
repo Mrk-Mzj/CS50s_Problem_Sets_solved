@@ -4,8 +4,10 @@
 # wbicie tego w przeglądarkę zwraca surowy plik tekstowy JSON.
 
 # pip install requests - instalujemy z pip pakiet requests, który pozwala korzystać z API, jakby nasz program był przeglądarką
-#importujemy też obsługę przekazywnia parametrów (sys) podczas uruchamiania programu
-# uruchamiamy np tak: python "kurs CS50 - 06 - modules 03 - API.py" Metallica
+# importujemy też obsługę przekazywnia parametrów (sys) podczas uruchamiania programu
+"""
+python "kurs CS50 - 06 - modules 03 - API.py" Metallica
+"""
 import requests
 import sys
 
@@ -14,10 +16,14 @@ import sys
 if len(sys.argv) != 2:
     sys.exit()
 
-# pobieramy surowy plik JSON
-server_JSON_raw = requests.get('https://itunes.apple.com/search?entity=song&limit=1&term=' + sys.argv[1])
+# pobieramy surowy plik tekstowy JSON
+server_JSON = requests.get('https://itunes.apple.com/search?entity=song&limit=1&term=' + sys.argv[1])
 
-# wydrukujmy odpowiedź serwera sformatowaną do JSONa, który zrozumie Python:
-python_JSON_clean = server_JSON_raw.json()
-print('\n',python_JSON_clean)
+# tego pliku nie da się wprost wydrukować; otrzymalibyśmy cyfrę 200 (komunikat, że serwer jest ok)
+# konwertujemy ten plik do obiektu - słownika Pythona:
+python_JSON_dict = server_JSON.json()
+print('\n', python_JSON_dict)
 
+# BTW: metoda .json() służy do konwersji odpowiedzi z serwera; gdybyśmy mieli w kodzie obiekt JSON, konwertowalibyśmy go na słownik poleceniem:
+# import json 
+# y = json.loads(x)
