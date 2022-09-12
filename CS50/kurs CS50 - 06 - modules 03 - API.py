@@ -1,21 +1,23 @@
-# pip install requests - instalujemy pakiet który pozwala korzystać z API, jakby nasz program był przeglądarką
-# uruchamiamy np tak: python kurs CS50 - 06 - modules 03 - API.py Queen
 
-#importujemy też obsługę przekazywnia parametrów podczas uruchamiania programu
+# Pomysł na użycie API. łączymy się z iTunes. Pobieramy info o piosence (entity), numer 1 (song), z zespołu Metallica (term)
+# https://itunes.apple.com/search?entity=song&limit=1&term=metallica
+# wbicie tego w przeglądarkę zwraca surowy plik tekstowy JSON.
+
+# pip install requests - instalujemy z pip pakiet requests, który pozwala korzystać z API, jakby nasz program był przeglądarką
+#importujemy też obsługę przekazywnia parametrów (sys) podczas uruchamiania programu
+# uruchamiamy np tak: python "kurs CS50 - 06 - modules 03 - API.py" Metallica
 import requests
 import sys
 
-#gdy program zostanie uruchomiony bez pojedynczego argumentu, opuść go
-if len(sys.argv) =! 2:
+# Pozwólmy użytkownikowi samemu wybrać zespół, ale zabezpieczmy się;
+# jeśli program zostanie uruchomiony bez pojedynczego argumentu, opuść go
+if len(sys.argv) != 2:
     sys.exit()
 
-# łączymy się z itunes. Pobieramy info o piosence (entity), numer 1 (song), z zespołu Queen (term)
-# https://itunes.apple.com/search?entity=song&limit=1&term=queen
-# wbicie tego w przeglądarkę zwraca plik JSON.
+# pobieramy surowy plik JSON
+server_JSON_raw = requests.get('https://itunes.apple.com/search?entity=song&limit=1&term=' + sys.argv[1])
 
-# Pobierzmy to programem tak, by user mógł sam wybrać zespół:
-server_says = requests.get('https://itunes.apple.com/search?entity=song&limit=1&term=' +sys.argv[1])
-
-# wydrukujmy odpowiedź serwera sformatowaną do kodu JSONa
-print(server_says.json)
+# wydrukujmy odpowiedź serwera sformatowaną do JSONa, który zrozumie Python:
+python_JSON_clean = server_JSON_raw.json()
+print('\n',python_JSON_clean)
 
