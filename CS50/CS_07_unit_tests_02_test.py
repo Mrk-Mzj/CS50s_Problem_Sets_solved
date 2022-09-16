@@ -15,5 +15,5 @@ def test_argument_hello_maker():
 
 
 # te dwa osobne testy mogę zapisać do dwóch osobnych plików. Oba pliki umieścić w folderze z testami.
-# Jeśli folder z testami oznaczę, umieszczając w nim pusty plik o nazwie __init__.py,
+# Jeśli folder z testami oznaczę (umieszczając w nim pusty plik o nazwie __init__.py)
 # będę mógł użyć polecenia "pytest nazwa_folderu" i uruchomić wszystkie pliki z testami, które tam są.
