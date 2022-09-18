@@ -1,5 +1,5 @@
 # test jednostkowy C - z użyciem ASSERT i przechwytywaniem błędów
-from CS_07_unit_tests_01_program import square
+from cs_07_unit_tests_01_program import square
 
 
 def main():

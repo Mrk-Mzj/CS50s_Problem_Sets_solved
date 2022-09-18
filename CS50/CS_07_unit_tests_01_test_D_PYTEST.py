@@ -4,7 +4,7 @@
 """
 pytest CS_07_unit_tests_01_test_D_PYTEST.py
 """
-from CS_07_unit_tests_01_program import square
+from cs_07_unit_tests_01_program import square
 
 
 # metoda testowania ręcznie z użyciem ASSERT i testowana pakitem PYTEST

@@ -1,20 +1,24 @@
 #
 # Chcemy wczytać plik i wypisać imiona w kolejności alfabetycznej.
 # Tworzę listę do której za chwilę załaduję kolejne linie tekstu:
-names = []
+imiona = []
 
-# Ładuję names kolejnymi linijkami
-# przy wczytywaniu nie trzeba używać "r"
-with open("CS_08_files_02.txt") as file:
-    for element in file:
-        names.append(element.rstrip())
+
+# Ładuję 'imiona' kolejnymi linijkami. Obcinam im w locie znaczniki \n.
+
+with open("CS_08_files_02.txt") as plik:
+    for linia in plik:
+        imiona.append(linia.rstrip())
+
 
 # Sortuję elementy i drukuję je
-for name in sorted(names):
+
+for name in sorted(imiona):
     print(f"Hello, {name}")
 
 
 # Mogę to skrócić i posortować od razu cały plik:
-with open("CS_08_files_02.txt") as file:
-    for element in sorted(file):
-        print(f"Witaj, {element.rstrip()}")
+
+with open("CS_08_files_02.txt") as plik:
+    for linia in sorted(plik):
+        print(f"Witaj, {linia.rstrip()}")
