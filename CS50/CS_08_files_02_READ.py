@@ -1,7 +1,7 @@
 #
 # otwórzmy plik i sczytajmy zawartość:
 # readlines() to funkcja Pythona z biblioteki I/O
-with open("CS_08_files_02.txt", "r") as plik:
+with open("cs_08_files_02.txt", "r") as plik:
     imiona = plik.readlines()
 
 
@@ -20,7 +20,7 @@ for linia in imiona:
 # Czyli dwókrotnie skanowaliśmy wszystkie linie.
 # Możemy czytać po linii i od razu ją drukować:
 
-with open("CS_08_files_02.txt", "r") as plik:
+with open("cs_08_files_02.txt", "r") as plik:
     for linia in plik:
         print("c -", linia.rstrip())
 

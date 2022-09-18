@@ -7,5 +7,5 @@ name = input("What's your name? ")
 # file.close
 
 # można skrócić i nie zapomni się o zamknięciu pliku:
-with open("CS_08_files_02.txt", "a") as file:
+with open("cs_08_files_02.txt", "a") as file:
     file.write(f"{name}\n")

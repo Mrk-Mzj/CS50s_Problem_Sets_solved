@@ -2,7 +2,7 @@
 #
 studenci = []
 
-with open("CS_08_files_04.csv") as file:
+with open("cs_08_files_04.csv") as file:
     for linia in file:
         # dzielimy linię na zmienne; dodajemy je do słownika opisującego ucznia; dodajemy go do listy studentów
         imie, szkola = linia.rstrip().split(",")
@@ -16,6 +16,13 @@ def klucz(uczen):
     return uczen["imie"]
 
 
-# Funkcja sorted() używa naszej funkcji by zbudować sobie listę imion i posortować dane wg niej
+# Funkcja sorted() używa naszej funkcji klucz() by zbudować sobie listę imion i posortować dane wg niej
 for uczen in sorted(studenci, key=klucz):
     print(uczen["imie"], "uczy się w", uczen["szkola"])
+
+print()
+
+# Ale nie musimy defioniować funkcji klucz. Można to samo skrócić do zapisu z tzw. funkcją lambda.
+# Jest to funkcja bez nazwy. Od razu piszemy, co przyjmuje i co ma zwracać:
+for uczen in sorted(studenci, key=lambda uczen: uczen["imie"]):
+    print(uczen["imie"], "uczy się LAMBDA w", uczen["szkola"])

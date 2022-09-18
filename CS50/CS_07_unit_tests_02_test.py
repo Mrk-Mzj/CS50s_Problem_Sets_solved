@@ -1,7 +1,7 @@
 """
 pytest CS_07_unit_tests_02_test.py
 """
-from CS_07_unit_tests_02_program import hello_maker
+from cs_07_unit_tests_02_program import hello_maker
 
 # ponownie rozbijam test na 2 funkcje, by łatwiej łapać bugi:
 

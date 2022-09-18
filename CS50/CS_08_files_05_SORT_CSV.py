@@ -6,7 +6,7 @@
 
 studenci = []
 
-with open("CS_08_files_04.csv") as file:
+with open("cs_08_files_04.csv") as file:
     for linia in file:
 
         imie, szkola = linia.rstrip().split(",")

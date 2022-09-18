@@ -6,7 +6,7 @@ imiona = []
 
 # Ładuję 'imiona' kolejnymi linijkami. Obcinam im w locie znaczniki \n.
 
-with open("CS_08_files_02.txt") as plik:
+with open("cs_08_files_02.txt") as plik:
     for linia in plik:
         imiona.append(linia.rstrip())
 
@@ -19,6 +19,6 @@ for name in sorted(imiona):
 
 # Mogę to skrócić i posortować od razu cały plik:
 
-with open("CS_08_files_02.txt") as plik:
+with open("cs_08_files_02.txt") as plik:
     for linia in sorted(plik):
         print(f"Witaj, {linia.rstrip()}")
