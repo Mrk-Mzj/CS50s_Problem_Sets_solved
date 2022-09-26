@@ -7,12 +7,13 @@ class Student:
 
 
 def main():
+
+    print()
     student = get_student()
     print(f"\n{student.name} is from {student.house}\n")
 
 
 def get_student():
-    print()
 
     # tworzymy obiekt 'student' czyli instancję klasy 'Student'
     # tworzymy atrybuty klasy (a właściwie zmienne instancji) 'name' i 'house'

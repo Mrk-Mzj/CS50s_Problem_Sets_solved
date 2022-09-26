@@ -4,16 +4,16 @@
 
 
 class Student:
-    def __init__(self, name_inputed, house_inputed):
+    def __init__(self, name, house):
 
-        # jeśli user nie poda imienia (if name_inputed == none)
-        if not name_inputed:
+        # jeśli user nie poda imienia (if name == none)
+        if not name:
 
-            raise ValueError("missing name")
+            raise ValueError("\nError: missing name")
             # wywołujemy wyjątek z komunikatem, który powie programiście, co się stało.
 
             # Taki error można ładnie obsłużyć, dodając w metodzie get_student()
-            # try: return Student(name_inputed, house_inputed)
+            # try: return Student(name, house)
             # except Value: ...
 
             # Alternatywy dla zgłoszenia błędu?
@@ -21,8 +21,12 @@ class Student:
             # -return None - też zły, bo zostawi uszkodzony obiekt i nic nie powie.
             # -sys.exit("missing name") - to zły pomysł, bo ubije program.
 
-        self.name = name_inputed
-        self.house = house_inputed
+        if house not in ["Gryffindor", "Hufflepuff", "Slytherin", "Ravenclaw"]:
+
+            raise ValueError("\nError: missing house")
+
+        self.name = name
+        self.house = house
 
 
 def main():
@@ -34,11 +38,11 @@ def main():
 
 def get_student():
 
-    name_inputed = input("Name: ")
-    house_inputed = input("House: ")
+    name = input("Name: ")
+    house = input("House: ")
 
     # tu dopisujemy try: i except:
-    return Student(name_inputed, house_inputed)
+    return Student(name, house)
 
 
 if __name__ == "__main__":
