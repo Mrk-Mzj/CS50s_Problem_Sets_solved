@@ -70,4 +70,4 @@ def srodek_listy(uniwersytety, srodkowy):
 if __name__ == "__main__":
     main()
 
-# możesz teraz usunąć nadmiarowe printy i porównać czas działania algorytmów
+# możesz teraz usunąć nadmiarowe printy, zlikwidować funkcję i porównać czas działania algorytmów
