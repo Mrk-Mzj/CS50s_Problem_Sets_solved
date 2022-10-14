@@ -34,10 +34,10 @@ def main():
         else:
             uniwersytety = uniwersytety[srodkowy + 1 : len(uniwersytety)]
 
+    # zapis 2 : funkcja z rekurencją : 18 linii
     szukaj(uniwersytety, szukany)
 
 
-# zapis 2 : funkcja z rekurencją : 18 linii
 def szukaj(uniwersytety, szukany):
 
     if len(uniwersytety) == 0:
