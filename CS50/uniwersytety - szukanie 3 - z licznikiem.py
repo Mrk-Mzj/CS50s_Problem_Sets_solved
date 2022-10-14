@@ -43,7 +43,7 @@ def main():
         elif szukany < uniwersytety[srodkowy]:
 
             # skracamy listę
-            uniwersytety = uniwersytety[0:srodkowy]
+            uniwersytety = uniwersytety[:srodkowy]
 
             # updejtujemy liczniki
             srodkowy = round(len(uniwersytety) / 2)
@@ -51,7 +51,7 @@ def main():
 
         else:
             # skracamy listę
-            uniwersytety = uniwersytety[srodkowy + 1 : len(uniwersytety)]
+            uniwersytety = uniwersytety[srodkowy + 1 :]
 
             # updejtujemy liczniki
             srodkowy = round(len(uniwersytety) / 2)
