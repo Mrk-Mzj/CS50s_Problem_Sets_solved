@@ -1,3 +1,6 @@
+# binary search po listach posortowanych
+
+
 def main():
 
     uniwersytety = [
