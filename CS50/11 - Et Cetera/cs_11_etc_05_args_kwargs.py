@@ -11,6 +11,7 @@
 
 
 def f(*args, **kwargs):
+    print()
     print("Positional:", args)
     print("Named:", kwargs)
     print()
