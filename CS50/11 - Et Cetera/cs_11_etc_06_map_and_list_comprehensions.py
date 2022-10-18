@@ -22,24 +22,24 @@ def yell1(*words):
     print("\n", *uppercased, "\n")
 
 
-# 2 To samo z użyciem map:
+# 2 To samo z użyciem list comprehension:
 
 
 def yell2(*words):
+    uppercased = [word.upper() for word in words]
+    # Przypomina skrócony wariant 1.
+
+    print("\n", *uppercased, "\n")
+
+
+# 3 To samo z użyciem map:
+
+
+def yell3(*words):
     uppercased = map(str.upper, words)
 
     # Tu uwaga: gdybyśmy napisali str.upper() z nawiasami, tobyśmy tę funkcję wywołali.
     # Chcemy ją tylko przekazać do funkcji map, dlatego pomijamy nawias.
-    print("\n", *uppercased, "\n")
-
-
-# 3 To samo z użyciem list comprehension:
-
-
-def yell3(*words):
-    uppercased = [word.upper() for word in words]
-    # Przypomina skrócony wariant 1.
-
     print("\n", *uppercased, "\n")
 
 
