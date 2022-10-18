@@ -1,6 +1,9 @@
 # map służy wielokrotnemu wywoływaniu jakiejś funkcji
 # dla każdego elementu zbioru, np. listy, tupla, setu, itd.
 
+# podobnie list comprehension to też pewna automatyka,
+# zapisana w jednej linii i użyta na listach
+
 
 def main():
 
@@ -22,7 +25,7 @@ def yell1(*words):
     print("\n", *uppercased, "\n")
 
 
-# 2 To samo z użyciem list comprehension:
+# 2 To samo z użyciem List Comprehension:
 
 
 def yell2(*words):
@@ -32,7 +35,7 @@ def yell2(*words):
     print("\n", *uppercased, "\n")
 
 
-# 3 To samo z użyciem map:
+# 3 To samo z użyciem Map:
 
 
 def yell3(*words):
