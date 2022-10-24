@@ -11,7 +11,9 @@ SQL działa bardzo szybko. Pisanie w nim zajmuje wielokrotnie mniej czasu. Baza 
 
 Działa w RAM, więc szybciej niż mySQL, ale nadaje się do mniejszych projektów. Można go obsługiwać z linii poleceń, lub wydawać komendy z kodu Pythona. 
 
-SQLite3.exe używa się z terminalu i instaluje ze strony producenta https://www.sqlite.org/download.html -> Precompiled Binaries for Windows -> sqlite-tools-win32-x86-....zip
+SQLite3.exe używa się z terminalu i instaluje ze strony producenta: 
+https://www.sqlite.org/download.html -> Precompiled Binaries for Windows -> sqlite-tools-win32-x86-....zip
+Testy z wersji terminalowej SQLite wrzuciłem do osobnego folderu SQLite_exe. Zaciągnąłem plik CSV, pozmieniałem zgodnie z wykładem, zapisałem do .DB poleceniem sqlite> .save favorites.db
 
 
 2. 'SQLite' 
