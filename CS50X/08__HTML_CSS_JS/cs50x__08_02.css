@@ -1,0 +1,24 @@
+header {
+    font-size: small;
+}
+
+h1 {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+form {
+    margin-bottom: 5%;
+}
+
+footer {
+    font-size: small;
+    margin-top: 2%;
+}
+
+.centered {
+    text-align: center;
+}
+
+#second_paragr {
+    color: rgb(0, 190, 190);
+}
