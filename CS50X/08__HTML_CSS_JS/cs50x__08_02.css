@@ -15,10 +15,37 @@ footer {
     margin-top: 2%;
 }
 
+/* id */
+#second_paragr {
+    color: rgb(0, 190, 190);
+}
+
+/* klasa */
 .centered {
     text-align: center;
 }
 
-#second_paragr {
+/* pseudo-klasa */
+p:first-of-type {
+    text-indent: 10px;
+    font-weight: 600;
+}
+
+/* element i 3 pseudoklasy: */
+a {
+    text-transform: uppercase;
+}
+
+a:hover {
     color: rgb(0, 190, 190);
+}
+
+/* wszystkie linki zawierające taką frazę, czyli dowolną podstronę z Yale */
+a[href*="yale.edu"]:hover {
+    color: rgb(189, 129, 0);
+}
+
+/* wszystkie linki zawierające dokładnie tę stronę Yale */
+a[href="https://www.yale.edu"]:hover {
+    color: rgb(88, 189, 0);
 }
