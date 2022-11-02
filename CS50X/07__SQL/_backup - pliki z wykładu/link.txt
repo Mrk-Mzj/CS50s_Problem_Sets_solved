@@ -1,6 +1,0 @@
-
-link kursu:
-https://cs50.harvard.edu/x/2022/weeks/7/ 
-
-link do plików:
-https://cdn.cs50.net/2021/fall/lectures/7/src7.zip
