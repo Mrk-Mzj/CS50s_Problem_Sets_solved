@@ -1,9 +1,14 @@
 # trzeba ustawić w systemie zmienną środowiskową z tokenem mojego konta w Replicate.com
 # export REPLICATE_API_TOKEN=1dbd95063a1e0c766fee827b508cf18394c0fdbc
+
+# instalowanie Replicate: pip install replicate
+# instalowanie PIP:
+# curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+# python get-pip.py
 import replicate
 
 
-#ustawienia:
+# ustawienia:
 model_AI = "stability-ai/stable-diffusion"
 fraza = "beautiful spring garden with pond and fountain"
 szer = 768
@@ -13,5 +18,3 @@ wys = 512
 # lub pętlę generującą kilka podobnych obrazów o różnym ustawieniu wierności obrazu z frazą
 model = replicate.models.get(model_AI)
 output = model.predict(prompt=fraza, width=szer, height=wys)
-
-
