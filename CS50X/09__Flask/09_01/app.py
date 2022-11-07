@@ -26,8 +26,8 @@ def index():
     # ...a jeśli w URL znajdzie się parametr "name" przypisz go do zmiennej "name"...
     name = request.args.get("name")
 
-    # ...i uruchom szablon index.html, przekazując mu tę zmienną z zapytania:
     if name == None:
-        return render_template("index.html", name="Stranger")
-    else:
-        return render_template("index.html", name=name)
+        name = "Stranger"
+
+    # ...i uruchom szablon index.html, przekazując mu tę zmienną z zapytania:
+    return render_template("index.html", name=name)
