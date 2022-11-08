@@ -3,7 +3,7 @@
 # np. CSS, skrypty javy, zdjęcia, itp.
 
 # Program Flask uruchamiamy z terminala poleceniem:
-# cd CS50X/09__Flask/09_01
+# cd CS50X/09__Flask/09_01__GET_Request
 # flask run
 
 # domyślnie otwiera się http://127.0.0.1:5000/

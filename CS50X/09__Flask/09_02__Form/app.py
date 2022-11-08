@@ -1,5 +1,5 @@
 # Program Flask uruchamiamy z terminala poleceniem:
-# cd CS50X/09__Flask/09_02
+# cd CS50X/09__Flask/09_02__Form
 # flask run
 
 from flask import Flask, render_template, request
