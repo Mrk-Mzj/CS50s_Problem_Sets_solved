@@ -17,11 +17,12 @@ def index():
     return render_template("index.html")
 
 
-@app.route("/greet")
-def greet():
+@app.route("/register/", methods=["POST"])
+def register():
 
     # Error checking
     # jeśli user zapomniał podać nazwisko lub wybrał sport spoza tych trzech..
+    print(request.form.get("sport"))
     if not request.form.get("name") or request.form.get("sport") not in [
         "Basketball",
         "Soccer",
