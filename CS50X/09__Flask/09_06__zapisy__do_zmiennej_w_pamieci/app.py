@@ -1,5 +1,5 @@
 # Program Flask uruchamiamy z terminala poleceniem:
-# cd CS50X/09__Flask/09_06__SQLite
+# cd CS50X/09_06__zapisy__do_zmiennej_w_pamieci
 #
 # auto restart serwera przy każdym zapisie:
 # flask --debug run

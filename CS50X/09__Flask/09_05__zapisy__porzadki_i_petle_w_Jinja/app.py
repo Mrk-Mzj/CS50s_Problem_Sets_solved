@@ -1,5 +1,5 @@
 # Program Flask uruchamiamy z terminala poleceniem:
-# cd CS50X/09__Flask/09_05__petle_w_Jinja
+# cd CS50X/09_05__zapisy__porzadki_i_petle_w_Jinja
 #
 # auto restart serwera przy każdym zapisie:
 # flask --debug run

@@ -1,8 +1,8 @@
 # Program Flask uruchamiamy z terminala poleceniem:
-# cd CS50X/09__Flask/09_04__zapisy
+# cd CS50X/09_04__zapisy__wstep
 #
 # auto restart serwera przy każdym zapisie:
-# flask --app app.py --debug run
+# flask --debug run
 
 
 from flask import Flask, render_template, request
