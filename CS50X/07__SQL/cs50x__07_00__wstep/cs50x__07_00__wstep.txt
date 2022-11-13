@@ -13,7 +13,7 @@ Działa w RAM, więc szybciej niż mySQL, ale nadaje się do mniejszych projekt�
 
 SQLite3.exe używa się z terminalu i instaluje ze strony producenta: 
 https://www.sqlite.org/download.html -> Precompiled Binaries for Windows -> sqlite-tools-win32-x86-....zip
-Testy z wersji terminalowej SQLite wrzuciłem do osobnego folderu SQLite_exe. Zaciągnąłem plik CSV, pozmieniałem zgodnie z wykładem, zapisałem do .DB poleceniem sqlite> .save favorites.db
+Testy z wersji terminalowej SQLite wrzuciłem do osobnego folderu (07_02). Zaciągnąłem plik CSV, pozmieniałem zgodnie z wykładem, zapisałem do .DB poleceniem sqlite> .save favorites.db
 
 
 2. 'SQLite' 
