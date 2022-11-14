@@ -11,6 +11,11 @@ app = Flask(__name__)
 
 # Requires that "Less secure app access" be on
 # https://support.google.com/accounts/answer/6010255
+
+# MAIL_USERNAME = ‘email@example.com’
+# MAIL_PASSWORD = ‘password’
+# MAIL_DEFAULT_SENDER = ‘“Sender” <noreply@example.com>’
+
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_DEFAULT_SENDER"]
 app.config["MAIL_PASSWORD"] = os.environ["MAIL_PASSWORD"]
 app.config["MAIL_PORT"] = 587
