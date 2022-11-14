@@ -1,4 +1,5 @@
 # Implements a registration form, confirming registration via email
+# PIP install flask_mail
 
 import os
 import re
@@ -18,11 +19,7 @@ app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USERNAME"] = os.environ["MAIL_USERNAME"]
 mail = Mail(app)
 
-SPORTS = [
-    "Basketball",
-    "Soccer",
-    "Ultimate Frisbee"
-]
+SPORTS = ["Basketball", "Soccer", "Ultimate Frisbee"]
 
 
 @app.route("/")
