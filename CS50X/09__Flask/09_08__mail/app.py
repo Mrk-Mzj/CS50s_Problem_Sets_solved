@@ -1,4 +1,3 @@
-# Implements a registration form, confirming registration via email
 # PIP install flask_mail
 
 import os
@@ -9,12 +8,22 @@ from flask_mail import Mail, Message
 
 app = Flask(__name__)
 
-# Requires that "Less secure app access" be on
-# https://support.google.com/accounts/answer/6010255
 
-# MAIL_USERNAME = ‘email@example.com’
+# Aplikacja zapisuje użytkownika na zajęcia i wysyła mu mail z potwierdzeniem.
+# Mail z którego idzie potwierdzenie konfigurujemy poniżej.
+# Mail na który przyjdzie potwierdzenie podaje się w formularzu.
+
+# W ustawieniach konta Google generujesz "Hasło do aplikacji".
+# To hasło podajesz w miejsce MAIL_PASSWORD. Jest w keepass.
+
+# Możesz je podać w cudzysłowiu, w kodzie. TO FATALNY POMYSŁ.
+# Takie hasło może przypadkowo wyciec.
+# Dlatego poniżej stosujemy zmienne środowiskowe dla użytkownika Marek (nie systemowe).
+# Tworzymy takie trzy pary klucz-wartość i restartujemy system:
+
+# MAIL_DEFAULT_SENDER = ‘“Marek” <mail@google.com>’
 # MAIL_PASSWORD = ‘password’
-# MAIL_DEFAULT_SENDER = ‘“Sender” <noreply@example.com>’
+# MAIL_USERNAME = ‘mail@google.com’
 
 app.config["MAIL_DEFAULT_SENDER"] = os.environ["MAIL_DEFAULT_SENDER"]
 app.config["MAIL_PASSWORD"] = os.environ["MAIL_PASSWORD"]
