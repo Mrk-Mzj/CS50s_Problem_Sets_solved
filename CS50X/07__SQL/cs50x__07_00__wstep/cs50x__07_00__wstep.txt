@@ -18,11 +18,11 @@ Testy z wersji terminalowej SQLite wrzuciłem do osobnego folderu (07_02). Zaci�
 
 2. 'SQLite' 
 to również nazwa wtyczki do VSCode (autor: alexcvzz). 
-Używa się przez wpisanie jej nazwy w okno [Ctrl + Shift + P] i wskazanie jej bazy danych do otwarcia. Komendy zapisuje się wtedy w pliku SQL.
+Używa się przez wpisanie jej nazwy w okno [Ctrl + Shift + P] i wskazanie jej bazy danych do otwarcia. Pokaże tabele na dole exploratora. Da się sprawdzić wartość domyślną kolumny. Komendy dla tej wtyczki wpisuje się w pliku SQL. Więcej w folderze 07_01.
 
 
 3. SQLite Viewer 
-- to inna, przydatna wtyczka. Pozwala wygodnie oglądać tablice wewnątrz pliku.
+- to inna, przydatna wtyczka. Pozwala wygodnie oglądać tablice wewnątrz pliku. Wystarczy kliknąć plik db. Wady? Nie pokaże wartości domyślnej, jaka może być przypisana do kolumny. Pokaże to .schema i pokaże to powyższa wtyczka #2.
 
 Python obsługuje pliki SQL dzięki bibliotekom. Najprostsza to CS50:
 py -m pip install cs50
