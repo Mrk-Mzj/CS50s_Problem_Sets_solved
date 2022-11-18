@@ -18,8 +18,9 @@ app = Flask(__name__)
 
 # Możesz je podać w cudzysłowiu, w kodzie. TO FATALNY POMYSŁ.
 # Takie hasło może przypadkowo wyciec.
-# Dlatego poniżej stosujemy zmienne środowiskowe dla użytkownika Marek (nie systemowe).
-# Tworzymy takie trzy pary klucz-wartość i restartujemy system:
+# Dlatego poniżej stosujemy zmienne środowiskowe dla użytkownika Marek.
+# Możemy je wpisać na stałe, z Ustawień w Windowsie, albo tymczasowo z CMD.
+# Tworzymy takie trzy pary klucz-wartość i restartujemy system / CMD:
 
 # MAIL_DEFAULT_SENDER = ‘“Marek” <mail@google.com>’
 # MAIL_PASSWORD = ‘password’
