@@ -1,6 +1,7 @@
-# API_KEY zapisałem w pliku tekstowym. Ustawiamy go w cmd:
-# set API_KEY=pk_3b6cf277dec74af49ff62d8c0f2e22d4
-# i restartujemy cmd.
+# API_KEY zapisałem w pliku tekstowym. Ustawiamy go w bash:
+# export API_KEY=pk_3b6cf277dec74af49ff62d8c0f2e22d4
+# (dla CMD komenda set API_KEY)
+# i ew. restartujemy konsolę.
 # Dla bash i powershell komendy brzmią trochę inaczej.
 # Zmienne można też wpisać na stałe, w ustawieniach systemu.
 
@@ -137,7 +138,41 @@ def quote():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
-    return apology("TODO")
+    if request.method == "POST":
+
+        username = request.form.get("username")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+
+        # sprawdzenie danych
+        if username == rows[0]["username"]:
+            return apology("name already taken", 403)
+
+        elif not username:
+            return apology("must provide username", 403)
+
+        elif not password:
+            return apology("must provide password", 403)
+
+        elif not confirmation:
+            return apology("must confirm password", 403)
+
+        elif password != confirmation:
+            return apology("must provide two identical passwords", 403)
+
+        # haszuj hasło
+        hash = generate_password_hash(password)
+
+        # dodaj usera do bazy danych:
+        db.execute("INSERT INTO users (username, hash) VALUES (?, ?)", username, hash)
+
+        # przekieruj do logowania:
+        return redirect("/login")
+
+    else:
+        return render_template("register.html")
 
 
 @app.route("/sell", methods=["GET", "POST"])
