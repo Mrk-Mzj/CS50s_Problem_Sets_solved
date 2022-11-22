@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+Quoted
+{% endblock %}
+
+
+{% block main %}
+
+{% for key, value in lookups.items() %}
+<h4>{{key}}: {{value}}</h4>
+{% endfor %}
+
+
+{% endblock %}
