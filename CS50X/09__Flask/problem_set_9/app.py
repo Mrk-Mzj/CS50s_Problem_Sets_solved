@@ -1,14 +1,19 @@
 # API_KEY zapisałem w pliku tekstowym. Ustawiamy go w bash:
 # export API_KEY=pk_3b6cf277dec74af49ff62d8c0f2e22d4
+#
 # (dla CMD komenda set API_KEY)
 # i ew. restartujemy konsolę.
 # Dla bash i powershell komendy brzmią trochę inaczej.
 # Zmienne można też wpisać na stałe, w ustawieniach systemu.
 
+# Marek hasło: a
+# Czarek: b, Darek: c
 
 import os
 
 from cs50 import SQL
+
+# TODO: zmienić cs50 na natywną bibliotekę SQL Pythona ew na SQLAlchemy
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -132,12 +137,34 @@ def logout():
 @login_required
 def quote():
     """Get stock quote."""
-    return apology("TODO")
+
+    # jeśli user podał symbol szukanej spółki:
+    if request.method == "POST":
+
+        symbol = request.form.get("symbol")
+        lookups = lookup(symbol)
+
+        # sprawdzenie czy podano symbol
+        if not symbol:
+            return apology("must provide company symbol", 403)
+
+        # sprawdzenie czy istnieje spółka dla tego symbolu
+        if lookups == None:
+            return apology("there is no such company", 403)
+
+        # jeśli istnieje przekaż info o niej do quoted.html
+        print(lookups)
+        return render_template("quoted.html", lookups=lookups)
+
+    else:
+        # zapytaj usera o symbol spółki:
+        return render_template("quote.html")
 
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     """Register user"""
+
     if request.method == "POST":
 
         username = request.form.get("username")
@@ -146,8 +173,10 @@ def register():
 
         rows = db.execute("SELECT * FROM users WHERE username = ?", username)
 
-        # sprawdzenie danych
-        if username == rows[0]["username"]:
+        # sprawdzenie danych:
+
+        # jeśli znaleziono choć 1 usera w bazie sprawdź czy login się nie powtarza
+        if rows and (username == rows[0]["username"]):
             return apology("name already taken", 403)
 
         elif not username:
