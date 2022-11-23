@@ -91,10 +91,23 @@ def buy():
         if not shares or shares <= 0:
             return apology("please provide an INT value", 403)
 
-        # TODO: sprawdź czy cena z lookups * shares nie przekracza kwoty usera
+        # TODO: sprawdź ile gotówki ma zalogowany user
+        cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
+
+        # jeśli ilość gotówki jest mniejsza od sumy zlecanych zakupów
+        if cash[0]["cash"] < (lookups["price"] * shares):
+            return apology("not enough cash", 403)
+
         # TODO: zapisz transakcję w bazie danych
 
-        print(lookups)
+        # TODO: odejmij kwotę z konta usera i zapisz w bazie danych
+
+        # TODO: wpisz zalogowanego użytkownika na górze szablonu html
+        # logged = db.execute(
+        #     "SELECT username FROM users WHERE id = ?", session["user_id"]
+        # )
+        # print("\n", logged[0]["username"])
+
         return redirect("/")
 
     # jeśli wszedł przez GET:

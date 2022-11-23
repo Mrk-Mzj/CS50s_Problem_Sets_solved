@@ -7,13 +7,15 @@ Buy
 
 
 {% block main %}
+(AAPL, AMZN, GOOG, META, NFLX, TSLA)
+
 <form action="/buy" method="post">
     <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="i.e. NFLX"
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="symbol" placeholder="NFLX"
             type="text">
     </div>
     <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="shares" placeholder="i.e. 1"
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" name="shares" placeholder="1"
             type="number">
     </div>
     <button class="btn btn-primary" type="submit">Buy</button>

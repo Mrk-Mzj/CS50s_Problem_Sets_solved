@@ -13,6 +13,9 @@
 -- posłużyło autorom do zagwarantowania integralności dancyh; 
 -- Tu nawet baza danych troszczy się o brak powtarzających się loginów.
 
+-- Indeksowanie dzieje się automatycznie dla kolumn Primary Key
+-- ale trzeba je zrobić ręcznie w kolumnie Foreign Key 
+
 
 -- TWORZĘ TABELĘ:
 
@@ -26,6 +29,8 @@ CREATE TABLE purchases (
     PRIMARY KEY (when_did),
     FOREIGN KEY (person_id) REFERENCES users(id)
 );
+CREATE UNIQUE INDEX person_id ON purchases (person_id);
+CREATE INDEX searchable ON purchases (did_what, how_many, for_price, of_company);
 
 .schema;
 SELECT * FROM purchases;
