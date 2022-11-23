@@ -71,7 +71,36 @@ def index():
 @login_required
 def buy():
     """Buy shares of stock"""
-    return apology("TODO")
+
+    # jeśli user podał symbol szukanej spółki:
+    if request.method == "POST":
+
+        # sprawdzenie czy podano symbol
+        symbol = request.form.get("symbol")
+        if not symbol:
+            return apology("must provide company symbol", 403)
+
+        # sprawdzenie czy istnieje spółka dla tego symbolu
+        lookups = lookup(symbol)
+        if lookups == None:
+            return apology("there is no such company", 403)
+
+        # sprawdzenie czy shares istnieje i jest > 0
+        # uwaga: formularze we Flask domyślnie zawsze zwracają STR
+        shares = request.form.get("shares", type=int)
+        if not shares or shares <= 0:
+            return apology("please provide an INT value", 403)
+
+        # TODO: sprawdź czy cena z lookups * shares nie przekracza kwoty usera
+        # TODO: zapisz transakcję w bazie danych
+
+        print(lookups)
+        return redirect("/")
+
+    # jeśli wszedł przez GET:
+    else:
+        # zapytaj usera o symbol spółki:
+        return render_template("buy.html")
 
 
 @app.route("/history")
@@ -141,21 +170,20 @@ def quote():
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
 
-        symbol = request.form.get("symbol")
-        lookups = lookup(symbol)
-
         # sprawdzenie czy podano symbol
+        symbol = request.form.get("symbol")
         if not symbol:
             return apology("must provide company symbol", 403)
 
         # sprawdzenie czy istnieje spółka dla tego symbolu
+        lookups = lookup(symbol)
         if lookups == None:
             return apology("there is no such company", 403)
 
         # jeśli istnieje przekaż info o niej do quoted.html
-        print(lookups)
         return render_template("quoted.html", lookups=lookups)
 
+    # jeśli wszedł przez GET:
     else:
         # zapytaj usera o symbol spółki:
         return render_template("quote.html")
