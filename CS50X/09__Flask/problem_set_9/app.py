@@ -6,14 +6,15 @@
 # Dla bash i powershell komendy brzmią trochę inaczej.
 # Zmienne można też wpisać na stałe, w ustawieniach systemu.
 
-# Marek hasło: a
-# Czarek: b, Darek: c
+# Marek hasło: a, Czarek: b, Darek: c
 
 import os
 
 from cs50 import SQL
 
 # TODO: zmienić cs50 na natywną bibliotekę SQL Pythona ew na SQLAlchemy
+# TODO: przenieść wszelkie zapytania do bazy danych do klasy (Modelu)?
+
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
 from tempfile import mkdtemp
@@ -91,22 +92,18 @@ def buy():
         if not shares or shares <= 0:
             return apology("please provide an INT value", 403)
 
-        # TODO: sprawdź ile gotówki ma zalogowany user
+        # sprawdź ile gotówki ma zalogowany user.
+        # Cash to lista słowników. Wchodzimy do [0] elementu listy i odpytujemy słownik
         cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
+        cash = cash[0]["cash"]
 
         # jeśli ilość gotówki jest mniejsza od sumy zlecanych zakupów
-        if cash[0]["cash"] < (lookups["price"] * shares):
+        if cash < (lookups["price"] * shares):
             return apology("not enough cash", 403)
 
         # TODO: zapisz transakcję w bazie danych
 
         # TODO: odejmij kwotę z konta usera i zapisz w bazie danych
-
-        # TODO: wpisz zalogowanego użytkownika na górze szablonu html
-        # logged = db.execute(
-        #     "SELECT username FROM users WHERE id = ?", session["user_id"]
-        # )
-        # print("\n", logged[0]["username"])
 
         return redirect("/")
 
@@ -154,7 +151,11 @@ def login():
             return apology("invalid username and/or password", 403)
 
         # Remember which user has logged in
+        # Dodaję też imię usera, żeby stronka mogła pokazać imię zalogowanej osoby
         session["user_id"] = rows[0]["id"]
+        session["user_name"] = db.execute(
+            "SELECT username FROM users WHERE id = ?", session["user_id"]
+        )[0]["username"]
 
         # Redirect user to home page
         return redirect("/")

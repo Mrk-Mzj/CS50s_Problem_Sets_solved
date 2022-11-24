@@ -1,5 +1,5 @@
 import os
-import requests  # type: ignore -dopisek dla Pylance, by nie podkreślał błędu w kodzie od autorów
+import requests  # pip install requests
 import urllib.parse
 
 from flask import redirect, render_template, request, session
