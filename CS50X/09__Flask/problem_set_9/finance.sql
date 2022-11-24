@@ -20,7 +20,7 @@
 -- TWORZĘ TABELĘ:
 
 CREATE TABLE purchases (
-    when_did    NUMERIC NOT NULL,
+    when_did    TEXT NOT NULL,
     person_id   INTEGER NOT NULL,
     did_what    TEXT NOT NULL,
     how_many    INTEGER NOT NULL,
@@ -29,8 +29,7 @@ CREATE TABLE purchases (
     PRIMARY KEY (when_did),
     FOREIGN KEY (person_id) REFERENCES users(id)
 );
-CREATE UNIQUE INDEX person_id ON purchases (person_id);
-CREATE INDEX searchable ON purchases (did_what, how_many, for_price, of_company);
+CREATE INDEX searchable ON purchases (person_id, did_what, how_many, for_price, of_company);
 
 .schema;
 SELECT * FROM purchases;

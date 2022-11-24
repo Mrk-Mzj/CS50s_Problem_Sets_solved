@@ -94,7 +94,8 @@ def buy():
 
         # sprawdź ile gotówki ma zalogowany user.
         # Cash to lista słowników. Wchodzimy do [0] elementu listy i odpytujemy słownik
-        cash = db.execute("SELECT cash FROM users WHERE id = ?", session["user_id"])
+        id = session["user_id"]
+        cash = db.execute("SELECT cash FROM users WHERE id=?", id)
         cash = cash[0]["cash"]
 
         # jeśli ilość gotówki jest mniejsza od sumy zlecanych zakupów
@@ -102,8 +103,19 @@ def buy():
             return apology("not enough cash", 403)
 
         # TODO: zapisz transakcję w bazie danych
+        for_price = lookups["price"]
+        of_company = lookups["symbol"]
+        db.execute(
+            "INSERT INTO purchases (when_did, person_id, did_what, how_many, for_price, of_company) VALUES (datetime('now'), ?, 'bought', ?, ?, ?)",
+            id,
+            shares,
+            for_price,
+            of_company,
+        )
 
         # TODO: odejmij kwotę z konta usera i zapisz w bazie danych
+        balance = cash - (shares * for_price)
+        db.execute("UPDATE users SET cash=? WHERE id=?", balance, id)
 
         return redirect("/")
 
@@ -150,7 +162,7 @@ def login():
             # powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
             return apology("invalid username and/or password", 403)
 
-        # Remember which user has logged in
+        # Remember which user id has logged in
         # Dodaję też imię usera, żeby stronka mogła pokazać imię zalogowanej osoby
         session["user_id"] = rows[0]["id"]
         session["user_name"] = db.execute(
