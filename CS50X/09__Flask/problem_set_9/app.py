@@ -75,7 +75,6 @@ def index():
 
     db.execute("SELECT * FROM purchases WHERE person_id=?", id)
 
-
     # tabela HTML
     # for each spółka ze spółki:
     # ilość udziałów
@@ -93,17 +92,17 @@ def buy():
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
 
-        # sprawdzenie czy podano symbol
+        # sprawdź czy podano symbol
         symbol = request.form.get("symbol")
         if not symbol:
             return apology("must provide company symbol", 403)
 
-        # sprawdzenie czy istnieje spółka dla tego symbolu
+        # sprawdź czy istnieje spółka dla tego symbolu
         lookups = lookup(symbol)
         if lookups == None:
             return apology("there is no such company", 403)
 
-        # sprawdzenie czy shares istnieje i jest > 0
+        # sprawdź czy shares istnieje i jest > 0
         # uwaga: formularze we Flask domyślnie zawsze zwracają STR
         shares = request.form.get("shares", type=int)
         if not shares or shares <= 0:
@@ -115,11 +114,11 @@ def buy():
         cash = db.execute("SELECT cash FROM users WHERE id=?", id)
         cash = cash[0]["cash"]
 
-        # jeśli ilość gotówki jest mniejsza od sumy zlecanych zakupów
+        # sprawdź czy stać go na zakup
         if cash < (lookups["price"] * shares):
             return apology("not enough cash", 403)
 
-        # zapisz transakcję w bazie danych
+        # Zapisz transakcję w szczegółowym wykazie transakcji (tabl. purchases)
         for_price = lookups["price"]
         of_company = lookups["symbol"]
         db.execute(
@@ -130,24 +129,38 @@ def buy():
             of_company,
         )
 
-        # odejmij kwotę z konta usera i zapisz w bazie danych
+        # Zapisz pomniejszoną kwotę na koncie usera (tabl. users)
         balance = cash - (shares * for_price)
         db.execute("UPDATE users SET cash=? WHERE id=?", balance, id)
 
+        # Zaktualizuj wykaz posiadaczy akcji (tabl. ownership)
 
-        # zaktualizuj tabelę ownership - pobierz ilość akcji, jaką ma user, zaktualizuj ją i zapisz:
+        # 1 - pobierz ilość akcji danej spółki, które ma user:
         sum_up = db.execute(
             "SELECT how_many FROM ownership WHERE person_id=? AND of_company=?",
             id,
             of_company,
         )
-        sum_up = sum_up[0]["how_many"] + (shares * for_price)
-        db.execute(
-            "UPDATE ownership SET how_many=? WHERE person_id=? AND of_company=?",
-            sum_up,
-            id,
-            of_company,
-        )
+
+        # 2 - zaktualizuj ilość akcji:
+        # a) jeśli user kupuje akcje tej spółki po raz pierwszy
+        if not sum_up:
+            sum_up = shares
+            db.execute(
+                "INSERT INTO ownership (person_id, how_many, of_company) VALUES (?,?,?)",
+                id,
+                sum_up,
+                of_company,
+            )
+        # b) jeśli user kupuje akcje tej spółki po raz kolejny
+        else:
+            sum_up = sum_up[0]["how_many"] + shares
+            db.execute(
+                "UPDATE ownership SET how_many=? WHERE person_id=? AND of_company=?",
+                sum_up,
+                id,
+                of_company,
+            )
 
         return redirect("/")
 

@@ -41,23 +41,18 @@ CREATE TABLE ownership (
 CREATE INDEX searchable_ownership ON ownership (person_id, of_company);
 
 
-INSERT INTO ownership (person_id, how_many, of_company) VALUES (1, 112.24,  'META');
-INSERT INTO ownership (person_id, how_many, of_company) VALUES (1, 583,     'NFLX');
-INSERT INTO ownership (person_id, how_many, of_company) VALUES (1, 453.21,  'AAPL');
-INSERT INTO ownership (person_id, how_many, of_company) VALUES (2, 549.6,   'TSLA');
-INSERT INTO ownership (person_id, how_many, of_company) VALUES (2, 197.64,  'GOOG');
-INSERT INTO ownership (person_id, how_many, of_company) VALUES (3, 470.65,  'AMZN');
+INSERT INTO ownership (person_id, how_many, of_company) VALUES (1, 2, 'META');
+INSERT INTO ownership (person_id, how_many, of_company) VALUES (1, 2, 'NFLX');
+INSERT INTO ownership (person_id, how_many, of_company) VALUES (1, 3, 'AAPL');
+INSERT INTO ownership (person_id, how_many, of_company) VALUES (2, 3, 'TSLA');
+INSERT INTO ownership (person_id, how_many, of_company) VALUES (2, 2, 'GOOG');
+INSERT INTO ownership (person_id, how_many, of_company) VALUES (3, 5, 'AMZN');
+INSERT INTO ownership (person_id, how_many, of_company) VALUES (1, 2, 'GOOG');
 
 
 .schema;
 SELECT * FROM purchases;
 
-
--- TEMP:
--- pobieram wartość:
-SELECT how_many FROM ownership WHERE person_id=1 AND of_company='AAPL';
--- nastpnie zmieniam ją w kodzie i updejtuję:
-UPDATE ownership SET how_many=453.21 WHERE person_id=1 AND of_company='AAPL';
 
 
 -- W RAZIE PROBLEMÓW:
