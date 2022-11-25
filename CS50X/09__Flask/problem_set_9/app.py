@@ -14,6 +14,7 @@ from cs50 import SQL
 
 # TODO: zmienić cs50 na natywną bibliotekę SQL Pythona ew na SQLAlchemy
 # TODO: przenieść wszelkie zapytania do bazy danych do klasy (Modelu)?
+# TODO: napisz funkcje (np. sprawdzające symbol, lookups), klasy, napisz testy
 
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -65,7 +66,23 @@ def after_request(response):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    return apology("TODO")
+    return apology("Work in progress")
+
+    id = session["user_id"]
+    cash = db.execute("SELECT cash FROM users WHERE id=?", id)
+    cash = cash[0]["cash"]
+    lookups = lookup(symbol)
+
+    db.execute("SELECT * FROM purchases WHERE person_id=?", id)
+
+
+    # tabela HTML
+    # for each spółka ze spółki:
+    # ilość udziałów
+    # obecne notowanie jednego udziału
+    # wartość akcji tej spółki (ilość * notowanie)
+    # gotówka
+    # całość aktywów (gotówka + suma wartości wszystkch akcji)
 
 
 @app.route("/buy", methods=["GET", "POST"])
@@ -102,7 +119,7 @@ def buy():
         if cash < (lookups["price"] * shares):
             return apology("not enough cash", 403)
 
-        # TODO: zapisz transakcję w bazie danych
+        # zapisz transakcję w bazie danych
         for_price = lookups["price"]
         of_company = lookups["symbol"]
         db.execute(
@@ -113,9 +130,24 @@ def buy():
             of_company,
         )
 
-        # TODO: odejmij kwotę z konta usera i zapisz w bazie danych
+        # odejmij kwotę z konta usera i zapisz w bazie danych
         balance = cash - (shares * for_price)
         db.execute("UPDATE users SET cash=? WHERE id=?", balance, id)
+
+
+        # zaktualizuj tabelę ownership - pobierz ilość akcji, jaką ma user, zaktualizuj ją i zapisz:
+        sum_up = db.execute(
+            "SELECT how_many FROM ownership WHERE person_id=? AND of_company=?",
+            id,
+            of_company,
+        )
+        sum_up = sum_up[0]["how_many"] + (shares * for_price)
+        db.execute(
+            "UPDATE ownership SET how_many=? WHERE person_id=? AND of_company=?",
+            sum_up,
+            id,
+            of_company,
+        )
 
         return redirect("/")
 
@@ -191,7 +223,7 @@ def logout():
 @app.route("/quote", methods=["GET", "POST"])
 @login_required
 def quote():
-    """Get stock quote."""
+    """look up a stock’s current price."""
 
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
