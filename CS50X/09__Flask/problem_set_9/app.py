@@ -6,9 +6,9 @@
 # Dla bash i powershell komendy brzmią trochę inaczej.
 # Zmienne można też wpisać na stałe, w ustawieniach systemu.
 
-# Marek hasło: a, Czarek: b, Darek: c
+# Marek hasło: a, Czarek: b, Darek: c, Jarek: qweQWE123!@#
 
-# TODO: wrzuć do helpers deklaracje zmiennych, jak id czy cash,
+# TODO: wrzuć do helpers (albo gdzieś w tym dokumencie) deklaracje zmiennych, jak id czy cash,
 # które co chwila powtarzają się na kolejnych stronach (home, buy, sell, itd).
 # Tu u góry strony ich nie zadeklarujesz, bo działają tylko dla zalogowanych userów;
 # nie dałoby się ich utworzyć.
@@ -29,7 +29,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # funkcje importowane z helpers.py:
-from helpers import apology, login_required, lookup, usd
+from helpers import apology, login_required, lookup, usd, password_check
 
 
 # Configure application
@@ -69,6 +69,64 @@ def after_request(response):
 
 # Login_required to funkcja dekorująca, stworzona w helpers.py.
 # Przekierowuje niezalogowanych do strony logowania.
+@app.route("/change_password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    """Change password"""
+
+    if request.method == "POST":
+
+        old_password = request.form.get("old_password")
+        password = request.form.get("password")
+        confirmation = request.form.get("confirmation")
+
+        # sprawdzenie danych:
+
+        if not old_password:
+            return apology("must provide old password", 403)
+
+        elif not password:
+            return apology("must provide password", 403)
+
+        elif not confirmation:
+            return apology("must confirm password", 403)
+
+        elif password != confirmation:
+            return apology("must provide two identical passwords", 403)
+
+        elif password == old_password:
+            return apology("must provide password different than previous one", 403)
+
+        # Sprawdź czy nowe hasło jest bezpieczne:
+
+        elif password_check(password)["password_ok"] == False:
+            return apology("must be: 8 long, 1 digit, 1 symbol, 1 upper, 1 lower", 403)
+        # password_check("a") zwraca:
+        # {'password_ok': False, 'length_error': True, 'digit_error': True, 'uppercase_error': True, 'lowercase_error': False, 'symbol_error': True}
+
+        # Sprawdź czy stare hasło się zgadza:
+
+        id = session["user_id"]
+        rows = db.execute("SELECT * FROM users WHERE id = ?", id)
+
+        # upewnij się, że user istnieje i wpisane old_password zgadza się z bazą danych
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], old_password):  # type: ignore
+            # powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
+            return apology("invalid old password", 403)
+
+        # haszuj hasło
+        hash = generate_password_hash(password)
+
+        # TODO: aktualizuj hasło u bieżącego użytkownika
+        db.execute("UPDATE users SET hash=? WHERE id=?", hash, id)
+
+        # przekieruj do logowania:
+        return redirect("/login")
+
+    else:
+        return render_template("change_password.html")
+
+
 @app.route("/")
 @login_required
 def index():
@@ -240,6 +298,7 @@ def login():
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):  # type: ignore
             # powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
+            # TODO: sprawdź ten błąd.
             return apology("invalid username and/or password", 403)
 
         # Remember which user id has logged in
@@ -305,15 +364,9 @@ def register():
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
 
-        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
-
         # sprawdzenie danych:
 
-        # jeśli znaleziono choć 1 usera w bazie sprawdź czy login się nie powtarza
-        if rows and (username == rows[0]["username"]):
-            return apology("name already taken", 403)
-
-        elif not username:
+        if not username:
             return apology("must provide username", 403)
 
         elif not password:
@@ -324,6 +377,17 @@ def register():
 
         elif password != confirmation:
             return apology("must provide two identical passwords", 403)
+
+        elif password_check(password)["password_ok"] == False:
+            return apology("must be: 8 long, 1 digit, 1 symbol, 1 upper, 1 lower", 403)
+        # password_check("a") zwraca:
+        # {'password_ok': False, 'length_error': True, 'digit_error': True, 'uppercase_error': True, 'lowercase_error': False, 'symbol_error': True}
+
+        # Na samym końcu daję czytanie bazy danych.
+        # Jeśli nie jest pusta sprawdź czy rządany login jest dostępny:
+        rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+        if rows and (username == rows[0]["username"]):
+            return apology("name already taken", 403)
 
         # haszuj hasło
         hash = generate_password_hash(password)
