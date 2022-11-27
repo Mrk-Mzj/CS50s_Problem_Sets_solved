@@ -14,14 +14,14 @@
 # nie dałoby się ich utworzyć.
 # Stwórzmy też w helpers funkcje, które tu wywołasz.
 # Unikniemy powstawrzania kodu i znacznie zwiększymy czytelność.
+# TODO: napisz funkcje (np. sprawdzające symbol, lookups), klasy, napisz testy
+# TODO: ew. zmienić cs50 na natywną bibliotekę SQL Pythona ew na SQLAlchemy
+# TODO: ew. przenieść wszelkie zapytania do bazy danych do klasy (Modelu)?
 
 import os
 
 from cs50 import SQL
 
-# TODO: zmienić cs50 na natywną bibliotekę SQL Pythona ew na SQLAlchemy
-# TODO: przenieść wszelkie zapytania do bazy danych do klasy (Modelu)?
-# TODO: napisz funkcje (np. sprawdzające symbol, lookups), klasy, napisz testy
 
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -117,7 +117,7 @@ def change_password():
         # haszuj hasło
         hash = generate_password_hash(password)
 
-        # TODO: aktualizuj hasło u bieżącego użytkownika
+        # aktualizuj hasło u bieżącego użytkownika
         db.execute("UPDATE users SET hash=? WHERE id=?", hash, id)
 
         # przekieruj do logowania:
@@ -165,8 +165,7 @@ def index():
     # Przygotowanie danych do tabeli 2:
 
     # Sprawdzenie, ile gotówki ma user
-    cash = db.execute("SELECT cash FROM users WHERE id=?", id)
-    cash = cash[0]["cash"]
+    cash = db.execute("SELECT cash FROM users WHERE id=?", id)[0]["cash"]
 
     # Wysłanie wszystkich danych do wyświetlenia
     return render_template(
@@ -202,10 +201,12 @@ def buy():
             return apology("please provide positive INT value", 403)
 
         # sprawdź ile gotówki ma zalogowany user.
-        # Cash to lista słowników. Wchodzimy do [0] elementu listy i odpytujemy słownik
+        # Cash to lista słowników. Wchodzimy do [0] elementu listy i odpytujemy słownik.
+        # Tu uwaga: baza danych dla gotówki zawsze zwróci jakąś wartość, więc możemy z miejsca ją oczyścić.
+        # Ale przy sprawdzaniu ilości akcji (sum_up) trzeba już uważać.
+        # Tam najpierw upewniamy się, że z bazy wróciła zmienna. Próba czyszczenia None wywali program.
         id = session["user_id"]
-        cash = db.execute("SELECT cash FROM users WHERE id=?", id)
-        cash = cash[0]["cash"]
+        cash = db.execute("SELECT cash FROM users WHERE id=?", id)[0]["cash"]
 
         # sprawdź czy stać go na zakup
         if cash < (lookups["price"] * shares):
@@ -436,7 +437,7 @@ def sell():
         if not shares or shares <= 0:
             return apology("please provide positive INT value", 403)
 
-        # TODO: Sprawdź, ile udziałów ma user i ile może sprzedać:
+        # Sprawdź, ile udziałów ma user i ile może sprzedać:
 
         # sprawdź ilość akcji danej spółki, które ma user:
         of_company = lookups["symbol"]
@@ -468,8 +469,10 @@ def sell():
 
         # sprawdź ile gotówki ma zalogowany user.
         # Cash to lista słowników. Wchodzimy do [0] elementu listy i odpytujemy słownik
-        cash = db.execute("SELECT cash FROM users WHERE id=?", id)
-        cash = cash[0]["cash"]
+        # Tu uwaga: baza danych dla gotówki zawsze zwróci jakąś wartość, więc możemy z miejsca ją oczyścić.
+        # Ale przy sprawdzaniu ilości akcji (sum_up) trzeba już uważać.
+        # Tam najpierw upewniamy się, że z bazy wróciła zmienna. Próba czyszczenia None wywali program.
+        cash = db.execute("SELECT cash FROM users WHERE id=?", id)[0]["cash"]
 
         # Zapisz powiększoną kwotę na koncie usera (tabl. users)
         balance = cash + (shares * for_price)
