@@ -267,7 +267,14 @@ def buy():
 @login_required
 def history():
     """Show history of transactions"""
-    return apology("TODO")
+
+    id = session["user_id"]
+    history = db.execute(
+        "SELECT when_did, did_what, how_many, for_price, of_company FROM purchases WHERE person_id=? ORDER BY when_did ASC",
+        id,
+    )
+    print("\n", history, "\n")
+    return render_template("history.html", history=history)
 
 
 # Login zamienia wprowadzone hasło na hasz. Porównuje go z haszem w bazie danych.
