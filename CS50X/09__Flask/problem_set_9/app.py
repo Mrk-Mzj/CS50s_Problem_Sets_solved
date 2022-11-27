@@ -8,6 +8,13 @@
 
 # Marek hasło: a, Czarek: b, Darek: c
 
+# TODO: wrzuć do helpers deklaracje zmiennych, jak id czy cash,
+# które co chwila powtarzają się na kolejnych stronach (home, buy, sell, itd).
+# Tu u góry strony ich nie zadeklarujesz, bo działają tylko dla zalogowanych userów;
+# nie dałoby się ich utworzyć.
+# Stwórzmy też w helpers funkcje, które tu wywołasz.
+# Unikniemy powstawrzania kodu i znacznie zwiększymy czytelność.
+
 import os
 
 from cs50 import SQL
@@ -66,22 +73,50 @@ def after_request(response):
 @login_required
 def index():
     """Show portfolio of stocks"""
-    return apology("Work in progress")
 
     id = session["user_id"]
+    grand_total = 0
+
+    # Przygotowanie danych do tabeli 1:
+
+    # Sprawdzenie, jakie akcje ma user i ile.
+    # Te dane wylądują w dwóch pierwszych kolumnach na stronie www.
+    possessions = db.execute(
+        "SELECT how_many, of_company FROM ownership WHERE person_id=?", id
+    )
+
+    # Następnie sprawdzamy, ile obecnie kosztuje akcja każdej ze spółek (current_price)
+    # i ile w związku z tym user ma z nich pieniędzy (total_value).
+    # Te dane dopisuję do poprzednich. Wylądują w 3 i 4 kolumnie tabeli na www.
+
+    for possession in possessions:
+
+        # odpytujemy API o zestaw danych dla aktualnie sprawdzanej spółki
+        current = lookup(possession["of_company"])
+
+        # jeśli API zwróci odpowiedź, uzupełniamy current_price tej spółki
+        if current:
+            possession["current_price"] = usd(current["price"])
+
+            # i obliczamy ile są warte dla usera
+            possession["total_value"] = usd(current["price"] * possession["how_many"])
+
+            # zaczynamy też obliczać sumę jego całego majątku
+            grand_total = grand_total + (current["price"] * possession["how_many"])
+
+    # Przygotowanie danych do tabeli 2:
+
+    # Sprawdzenie, ile gotówki ma user
     cash = db.execute("SELECT cash FROM users WHERE id=?", id)
     cash = cash[0]["cash"]
-    lookups = lookup(symbol)
 
-    db.execute("SELECT * FROM purchases WHERE person_id=?", id)
-
-    # tabela HTML
-    # for each spółka ze spółki:
-    # ilość udziałów
-    # obecne notowanie jednego udziału
-    # wartość akcji tej spółki (ilość * notowanie)
-    # gotówka
-    # całość aktywów (gotówka + suma wartości wszystkch akcji)
+    # Wysłanie wszystkich danych do wyświetlenia
+    return render_template(
+        "index.html",
+        possessions=possessions,
+        cash=usd(cash),
+        grand_total=usd(grand_total + cash),
+    )
 
 
 @app.route("/buy", methods=["GET", "POST"])
