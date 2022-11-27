@@ -199,7 +199,7 @@ def buy():
         # uwaga: formularze we Flask domyślnie zawsze zwracają STR
         shares = request.form.get("shares", type=int)
         if not shares or shares <= 0:
-            return apology("please provide an INT value", 403)
+            return apology("please provide positive INT value", 403)
 
         # sprawdź ile gotówki ma zalogowany user.
         # Cash to lista słowników. Wchodzimy do [0] elementu listy i odpytujemy słownik
@@ -413,4 +413,90 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock"""
-    return apology("TODO")
+    # return apology("TODO")
+
+    # jeśli user podał symbol szukanej spółki:
+    if request.method == "POST":
+
+        id = session["user_id"]
+
+        # sprawdź czy podano symbol
+        symbol = request.form.get("symbol")
+        if not symbol:
+            return apology("must provide company symbol", 403)
+
+        # sprawdź czy istnieje spółka dla tego symbolu
+        lookups = lookup(symbol)
+        if lookups == None:
+            return apology("there is no such company", 403)
+
+        # sprawdź czy shares istnieje i jest > 0
+        # uwaga: formularze we Flask domyślnie zawsze zwracają STR
+        shares = request.form.get("shares", type=int)
+        if not shares or shares <= 0:
+            return apology("please provide positive INT value", 403)
+
+        # TODO: Sprawdź, ile udziałów ma user i ile może sprzedać:
+
+        # sprawdź ilość akcji danej spółki, które ma user:
+        of_company = lookups["symbol"]
+        sum_up = db.execute(
+            "SELECT how_many FROM ownership WHERE person_id=? AND of_company=?",
+            id,
+            of_company,
+        )
+
+        # jeśli user ma te akcje, oczyść zmienną; jeśli nie, zgłoś błąd:
+        if sum_up:
+            sum_up = sum_up[0]["how_many"]
+        else:
+            return apology("you don't have shares of this company", 403)
+
+        # sprawdź czy user może tyle sprzedać
+        if sum_up < shares:
+            return apology("you don't have this many shares", 403)
+
+        # Zapisz transakcję w szczegółowym wykazie transakcji (tabl. purchases)
+        for_price = lookups["price"]
+        db.execute(
+            "INSERT INTO purchases (when_did, person_id, did_what, how_many, for_price, of_company) VALUES (datetime('now'), ?, 'sold', ?, ?, ?)",
+            id,
+            shares,
+            for_price,
+            of_company,
+        )
+
+        # sprawdź ile gotówki ma zalogowany user.
+        # Cash to lista słowników. Wchodzimy do [0] elementu listy i odpytujemy słownik
+        cash = db.execute("SELECT cash FROM users WHERE id=?", id)
+        cash = cash[0]["cash"]
+
+        # Zapisz powiększoną kwotę na koncie usera (tabl. users)
+        balance = cash + (shares * for_price)
+        db.execute("UPDATE users SET cash=? WHERE id=?", balance, id)
+
+        # Zaktualizuj wykaz posiadaczy akcji (tabl. ownership)
+        # a) jeśli user sprzedaje wszystkie: usuń wiersz z bazy
+        if shares == sum_up:
+            db.execute(
+                "DELETE FROM ownership WHERE person_id=? AND of_company=?",
+                id,
+                of_company,
+            )
+
+        # b) jeśli user sprzedaje część: zaktualizuj wiersz w bazie
+        else:
+            sum_up -= shares
+            db.execute(
+                "UPDATE ownership SET how_many=? WHERE person_id=? AND of_company=?",
+                sum_up,
+                id,
+                of_company,
+            )
+
+        return redirect("/")
+
+    # jeśli wszedł przez GET:
+    else:
+        # zapytaj usera o symbol spółki:
+        return render_template("sell.html")
