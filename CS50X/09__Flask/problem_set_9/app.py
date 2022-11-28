@@ -5,6 +5,7 @@
 # i ew. restartujemy konsolę.
 # Dla bash i powershell komendy brzmią trochę inaczej.
 # Zmienne można też wpisać na stałe, w ustawieniach systemu.
+# flask --debug run
 
 # Marek hasło: a, Czarek: b, Darek: c, Jarek: qweQWE123!@#
 
@@ -376,6 +377,9 @@ def register():
 
         if not username:
             return apology("must provide username", 403)
+
+        if not username.isalnum():
+            return apology("user name alphanumerical only", 403)
 
         elif not password:
             return apology("must provide password", 403)
