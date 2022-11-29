@@ -9,15 +9,10 @@
 
 # Marek hasło: a, Czarek: b, Darek: c, Jarek: qweQWE123!@#
 
-# TODO: wrzuć do helpers (albo gdzieś w tym dokumencie) deklaracje zmiennych, jak id czy cash,
-# które co chwila powtarzają się na kolejnych stronach (home, buy, sell, itd).
-# Tu u góry strony ich nie zadeklarujesz, bo działają tylko dla zalogowanych userów;
-# nie dałoby się ich utworzyć.
-# Stwórzmy też w helpers funkcje, które tu wywołasz.
-# Unikniemy powstawrzania kodu i znacznie zwiększymy czytelność.
-# TODO: napisz funkcje (np. sprawdzające symbol, lookups), klasy, napisz testy
-# TODO: ew. zmienić cs50 na natywną bibliotekę SQL Pythona ew na SQLAlchemy
-# TODO: ew. przenieść wszelkie zapytania do bazy danych do klasy (Modelu)?
+# TODO: napisz sprawdzenia symbolu i sprawdzenia shares (w buy/sell/quote) jako funkcje w helpers
+# TODO: ew. napisz testy jednostkowe
+# TODO: ew. przenieść wszelkie zapytania do bazy danych (db.execute) do helpers.py lub nowego pliku.
+# TODO: ew. możesz zmienić cs50 na natywną bibliotekę SQL Pythona lub na SQLAlchemy
 
 import os
 
@@ -30,7 +25,7 @@ from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
 # funkcje importowane z helpers.py:
-from helpers import apology, login_required, lookup, usd, password_check
+from helpers import apology, login_required, lookup, usd, id, password_check
 
 
 # Configure application
@@ -107,19 +102,20 @@ def change_password():
 
         # Sprawdź czy stare hasło się zgadza:
 
-        id = session["user_id"]
-        rows = db.execute("SELECT * FROM users WHERE id = ?", id)
+        rows = db.execute("SELECT * FROM users WHERE id = ?", id())
 
         # upewnij się, że user istnieje i wpisane old_password zgadza się z bazą danych
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], old_password):  # type: ignore
-            # powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
+            # Powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
+            # Pylance martwi się, że pytanie o hasło może zwrócić None i wywalić kod. Niepotrzebnie.
+            # Jeśli udało się wczytać dane o userze: len(rows)=1, to wśród nich będzie hasło.
             return apology("invalid old password", 403)
 
         # haszuj hasło
         hash = generate_password_hash(password)
 
         # aktualizuj hasło u bieżącego użytkownika
-        db.execute("UPDATE users SET hash=? WHERE id=?", hash, id)
+        db.execute("UPDATE users SET hash=? WHERE id=?", hash, id())
 
         # przekieruj do logowania:
         return redirect("/login")
@@ -133,7 +129,6 @@ def change_password():
 def index():
     """Show portfolio of stocks"""
 
-    id = session["user_id"]
     grand_total = 0
 
     # Przygotowanie danych do tabeli 1:
@@ -141,7 +136,7 @@ def index():
     # Sprawdzenie, jakie akcje ma user i ile.
     # Te dane wylądują w dwóch pierwszych kolumnach na stronie www.
     possessions = db.execute(
-        "SELECT how_many, of_company FROM ownership WHERE person_id=?", id
+        "SELECT how_many, of_company FROM ownership WHERE person_id=?", id()
     )
 
     # Następnie sprawdzamy, ile obecnie kosztuje akcja każdej ze spółek (current_price)
@@ -166,7 +161,7 @@ def index():
     # Przygotowanie danych do tabeli 2:
 
     # Sprawdzenie, ile gotówki ma user
-    cash = db.execute("SELECT cash FROM users WHERE id=?", id)[0]["cash"]
+    cash = db.execute("SELECT cash FROM users WHERE id=?", id())[0]["cash"]
 
     # Wysłanie wszystkich danych do wyświetlenia
     return render_template(
@@ -206,8 +201,7 @@ def buy():
         # Tu uwaga: baza danych dla gotówki zawsze zwróci jakąś wartość, więc możemy z miejsca ją oczyścić.
         # Ale przy sprawdzaniu ilości akcji (sum_up) trzeba już uważać.
         # Tam najpierw upewniamy się, że z bazy wróciła zmienna. Próba czyszczenia None wywali program.
-        id = session["user_id"]
-        cash = db.execute("SELECT cash FROM users WHERE id=?", id)[0]["cash"]
+        cash = db.execute("SELECT cash FROM users WHERE id=?", id())[0]["cash"]
 
         # sprawdź czy stać go na zakup
         if cash < (lookups["price"] * shares):
@@ -218,7 +212,7 @@ def buy():
         of_company = lookups["symbol"]
         db.execute(
             "INSERT INTO purchases (when_did, person_id, did_what, how_many, for_price, of_company) VALUES (datetime('now'), ?, 'bought', ?, ?, ?)",
-            id,
+            id(),
             shares,
             for_price,
             of_company,
@@ -226,14 +220,14 @@ def buy():
 
         # Zapisz pomniejszoną kwotę na koncie usera (tabl. users)
         balance = cash - (shares * for_price)
-        db.execute("UPDATE users SET cash=? WHERE id=?", balance, id)
+        db.execute("UPDATE users SET cash=? WHERE id=?", balance, id())
 
         # Zaktualizuj wykaz posiadaczy akcji (tabl. ownership)
 
         # 1 - pobierz ilość akcji danej spółki, które ma user:
         sum_up = db.execute(
             "SELECT how_many FROM ownership WHERE person_id=? AND of_company=?",
-            id,
+            id(),
             of_company,
         )
 
@@ -243,7 +237,7 @@ def buy():
             sum_up = shares
             db.execute(
                 "INSERT INTO ownership (person_id, how_many, of_company) VALUES (?,?,?)",
-                id,
+                id(),
                 sum_up,
                 of_company,
             )
@@ -253,7 +247,7 @@ def buy():
             db.execute(
                 "UPDATE ownership SET how_many=? WHERE person_id=? AND of_company=?",
                 sum_up,
-                id,
+                id(),
                 of_company,
             )
 
@@ -270,10 +264,9 @@ def buy():
 def history():
     """Show history of transactions"""
 
-    id = session["user_id"]
     history = db.execute(
         "SELECT when_did, did_what, how_many, for_price, of_company FROM purchases WHERE person_id=? ORDER BY when_did ASC",
-        id,
+        id(),
     )
     print("\n", history, "\n")
     return render_template("history.html", history=history)
@@ -306,15 +299,16 @@ def login():
 
         # Ensure username exists and password is correct
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):  # type: ignore
-            # powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
-            # TODO: sprawdź ten błąd.
+            # Powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
+            # Pylance martwi się, że pytanie o hasło może zwrócić None i wywalić kod. Niepotrzebnie.
+            # Jeśli udało się wczytać dane o userze: len(rows)=1, to wśród nich będzie hasło.
             return apology("invalid username and/or password", 403)
 
         # Remember which user id has logged in
         # Dodaję też imię usera, żeby stronka mogła pokazać imię zalogowanej osoby
         session["user_id"] = rows[0]["id"]
         session["user_name"] = db.execute(
-            "SELECT username FROM users WHERE id = ?", session["user_id"]
+            "SELECT username FROM users WHERE id = ?", id()
         )[0]["username"]
 
         # Redirect user to home page
@@ -423,8 +417,6 @@ def sell():
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
 
-        id = session["user_id"]
-
         # sprawdź czy podano symbol
         symbol = request.form.get("symbol")
         if not symbol:
@@ -447,7 +439,7 @@ def sell():
         of_company = lookups["symbol"]
         sum_up = db.execute(
             "SELECT how_many FROM ownership WHERE person_id=? AND of_company=?",
-            id,
+            id(),
             of_company,
         )
 
@@ -465,7 +457,7 @@ def sell():
         for_price = lookups["price"]
         db.execute(
             "INSERT INTO purchases (when_did, person_id, did_what, how_many, for_price, of_company) VALUES (datetime('now'), ?, 'sold', ?, ?, ?)",
-            id,
+            id(),
             shares,
             for_price,
             of_company,
@@ -476,18 +468,18 @@ def sell():
         # Tu uwaga: baza danych dla gotówki zawsze zwróci jakąś wartość, więc możemy z miejsca ją oczyścić.
         # Ale przy sprawdzaniu ilości akcji (sum_up) trzeba już uważać.
         # Tam najpierw upewniamy się, że z bazy wróciła zmienna. Próba czyszczenia None wywali program.
-        cash = db.execute("SELECT cash FROM users WHERE id=?", id)[0]["cash"]
+        cash = db.execute("SELECT cash FROM users WHERE id=?", id())[0]["cash"]
 
         # Zapisz powiększoną kwotę na koncie usera (tabl. users)
         balance = cash + (shares * for_price)
-        db.execute("UPDATE users SET cash=? WHERE id=?", balance, id)
+        db.execute("UPDATE users SET cash=? WHERE id=?", balance, id())
 
         # Zaktualizuj wykaz posiadaczy akcji (tabl. ownership)
         # a) jeśli user sprzedaje wszystkie: usuń wiersz z bazy
         if shares == sum_up:
             db.execute(
                 "DELETE FROM ownership WHERE person_id=? AND of_company=?",
-                id,
+                id(),
                 of_company,
             )
 
@@ -497,7 +489,7 @@ def sell():
             db.execute(
                 "UPDATE ownership SET how_many=? WHERE person_id=? AND of_company=?",
                 sum_up,
-                id,
+                id(),
                 of_company,
             )
 

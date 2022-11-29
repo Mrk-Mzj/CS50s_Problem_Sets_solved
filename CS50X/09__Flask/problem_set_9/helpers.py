@@ -93,6 +93,15 @@ def usd(value):
     return f"${value:,.2f}"
 
 
+# Wyciaganie numeru użytkownika z ciastka.
+# id=session["user_id"] nie dało się go zadeklarować raz, na górze programu w app.py, bo występował błąd.
+# Musiało być deklarowane we wnętrzu funkcji związanej z HTTP.
+# Nie dało się go zadeklarować raz, wewnątrz login albo index, bo nie wychodziło poza scope.
+# Było deklarowane w wielu funkcjach od nowa. Wrzucenie go do funkcji w helpers skróciło i uprościo kod.
+def id():
+    return session["user_id"]
+
+
 def password_check(password):
     """
     Verify the strength of 'password'
