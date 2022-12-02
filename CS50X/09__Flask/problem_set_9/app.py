@@ -9,14 +9,12 @@
 
 # Marek hasło: a, Czarek: b, Darek: c, Jarek: qweQWE123!@#, Lech: qwaQWA123!@#
 
-# TODO: napisz sprawdzenia symbolu i sprawdzenia shares (w buy/sell/quote) jako funkcje w helpers
 # TODO: ew. napisz testy jednostkowe
 # TODO: ew. możesz zmienić cs50 na natywną bibliotekę SQL Pythona lub na SQLAlchemy
 
+
 import os
-
 from cs50 import SQL
-
 
 from flask import Flask, flash, redirect, render_template, request, session
 from flask_session import Session
@@ -393,7 +391,6 @@ def register():
 @login_required
 def sell():
     """Sell shares of stock"""
-    # return apology("TODO")
 
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
