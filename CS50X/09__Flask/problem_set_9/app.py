@@ -59,8 +59,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-# Configure CS50 Library to use SQLite database
-db = SQL("sqlite:///finance.db")
 
 # Make sure API key is set
 if not os.environ.get("API_KEY"):
@@ -267,19 +265,22 @@ def login():
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
 
+        username = request.form.get("username")
+        password = request.form.get("password")
+
         # Ensure username was submitted
-        if not request.form.get("username"):
+        if not username:
             return apology("must provide username", 403)
 
         # Ensure password was submitted
-        elif not request.form.get("password"):
+        elif not password:
             return apology("must provide password", 403)
 
         # Wczytanie danych logowania po username
-        rows = rows_of_username(request.form.get("username"))
+        rows = rows_of_username(username)
 
         # Ensure username exists and password is correct
-        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):  # type: ignore
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):  # type: ignore
             # Powyższy dopisek to info do Pylance by nie podkreślał błędu w kodzie od autorów.
             # Pylance martwi się, że pytanie o hasło może zwrócić None i wywalić kod. Niepotrzebnie.
             # Jeśli udało się wczytać dane o userze: len(rows)=1, to wśród nich będzie hasło.
