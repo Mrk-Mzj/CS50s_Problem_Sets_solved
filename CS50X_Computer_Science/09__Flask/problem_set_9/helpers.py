@@ -41,9 +41,15 @@ def login_required(f):
     https://flask.palletsprojects.com/en/1.1.x/patterns/viewdecorators/
     """
 
-    # To taka funkcja strażnik, napisana przez twórców Flaska.
-    # Przyjmuje parametry (login, hasło) funkcji dekorowanej i zwraca ją z tymi parametrami.
-    # Czyli nie robi nic, jest przezroczysta — chyba, że id usera nie ma w sesji; wtedy przekierowuje na /login.
+    # Login_required to taka funkcja strażnik, napisana przez twórców Flaska.
+    # 1. Przyjmuje oryginalną funkcję jako f.
+    # 2. Definiuje nową funkcję, która zawiera starą + dodatkowy kod sprawdzający czy jest ciastko.
+    # 3. Zwraca nową funkcję. Ta, jeśli ciastko istnieje, zwróci funkcję oryginalną.
+
+    # Czyli login_required to automat pakujący - przyjmuje funkcję f i zwraca decorated_function.
+    # Decorated_function to paczka zawierająca nasz oryginał f z dodatkowym kodem.
+    # Kod sprawdzi czy jest ciastko. Jeśli tak, decorated_function zwróci oryginalną funkcję f.
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if session.get("user_id") is None:
