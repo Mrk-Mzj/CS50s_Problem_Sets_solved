@@ -1,8 +1,11 @@
 def main():
-    # name, house = get_student()
-    # print(f"{name} is from {house}")
+
     student = get_student()
     print(f"{student[0]} is from {student[1]}")
+
+    # alternatywnie: rozpakowywanie tupla do dwóch zmiennych:
+    # name, house = get_student()
+    # print(f"{name} is from {house}")
 
 
 def get_student():
