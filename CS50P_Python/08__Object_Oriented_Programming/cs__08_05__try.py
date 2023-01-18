@@ -38,11 +38,17 @@ def main():
 
 def get_student():
 
-    name = input("Name: ")
-    house = input("House: ")
+    # odpytuj użytkownika w nieskończoność, aż uda się skleić obiekt bez błędu:
+    while True:
+        try:
+            name = input("\nImię? ")
+            house = input("Dom? (Gryffindor, Hufflepuff, Slytherin, Ravenclaw) ")
+            student = Student(name, house)
+            break
+        except ValueError:
+            pass
 
-    # tu dopisujemy try: i except:
-    return Student(name, house)
+    return student
 
 
 if __name__ == "__main__":
