@@ -1,5 +1,4 @@
-# Rozwijamy klasę o customowową metodę charm do rzucania patronusa.
-# Przy okazji dodajemy też metodę __str__ która pozwala potraktować studenta, jak STR
+# Rozwijamy klasę o nową, własną metodę "charm". Będzie ona reagować na patronusy, jakie poda użytkownik.
 
 
 class Student:
@@ -13,14 +12,11 @@ class Student:
         self.house = house
         self.patronus = patronus
 
-    # Side quest:
-    def __str__(self):
-        return f"\nSo, you are that {self.name} from {self.house}! Do you like {self.patronus}s?\n"
 
-    # Customowa metoda:
+    # Nasza własna metoda, którą wywołujemy z kodu:
     def charm(self):
-        match self.patronus:
 
+        match self.patronus:
             case "aaa":
                 return "Student is casting mighty patronus AAA!\n"
                 # równie dobrze można tu robić print, a w main wywołać samo student.charm()
@@ -32,12 +28,18 @@ class Student:
                 return "Student is you have no power here\n"
 
 
+    # Przy okazji dodajemy też metodę __str__, która uruchomi się, gdy kod spróbuje 
+    # potraktować studenta, jako string (np. print(student))
+    def __str__(self):
+        return f"\nSo, you are that {self.name} from {self.house}! Do you like {self.patronus}?"
+
+
 def main():
 
     print()
     student = get_student()
-    print(student)  # tu próbujemy użyć obiekt, jakby był STR
-    print(student.charm())  # a tu korzystamy z customowej metody
+    print(student)              # tu próbujemy użyć obiekt 'student', jako string
+    print(student.charm())      # tu wywołujemy naszą własną metodę .charm
 
 
 def get_student():
