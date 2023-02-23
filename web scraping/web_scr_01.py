@@ -8,9 +8,11 @@ import requests
 from bs4 import BeautifulSoup
 
 
+# klasyczny 'request' obsługuje tylko statyczny HTML. Do obsługi JS potrzebujemy https://pypi.org/project/requests-html/
 request = requests.get(
     "https://www.funduszeeuropejskie.gov.pl/wyszukiwarka/mikro-male-i-srednie-przedsiebiorstwa/#/3756=Mikro,%20ma%C5%82e%20i%20%C5%9Brednie%20przedsi%C4%99biorstwa"
 )
+# print(request.text)
 
 soup = BeautifulSoup(request.text, "lxml")
 print(soup.prettify())
