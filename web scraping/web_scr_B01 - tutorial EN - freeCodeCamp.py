@@ -1,3 +1,4 @@
+# Part 1: Pobieranie tytułu filmu i napisów do niego, i zapisywanie w pliku TXT.
 # https://www.freecodecamp.org/news/how-to-scrape-multiple-web-pages-using-python/
 
 # pip install beautifulsoup4
