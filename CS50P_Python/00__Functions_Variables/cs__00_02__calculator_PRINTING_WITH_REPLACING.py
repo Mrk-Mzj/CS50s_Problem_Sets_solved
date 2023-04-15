@@ -1,16 +1,16 @@
+# Function prints adding result, formatted in two ways:
+def print_adding(x, y):
+    # ...separating large numbers with commas
+    print(f"Adding result is: { (x+y) :,}")
 
-def adding(x,y):
-    
-     # printing with separating large numbers with commas
-    print(f'Adding result is: { (x+y) :,}')
+    # ...separating with spaces instead of commas
+    print(f"Adding result is: { (x+y) :,}".replace(",", " "))
 
-    # same with spaces instead of commas
-    print(f'Adding result is: { (x+y) :,}'.replace(',' , ' '))
 
-# CODE
-# assigning a float value to variables
+# assigning float value to variables:
 x = float(input("What's X? "))
 y = float(input("What's Y? "))
 
-adding(x,y)
 
+# executing the function:
+print_adding(x, y)
