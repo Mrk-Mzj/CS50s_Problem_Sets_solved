@@ -1,4 +1,4 @@
-# lista [ słowników {'zbiorów':'par'} ]
+# lista [ słowników {'kluczy':'wartości'} ]
 # list_of_directories = [{'name':'Hermiona', 'house':'Gryffindor', 'patronus':'Otter'}, {'name':'Harry', 'house':'Gryffindor', 'patronus':'Stag'}, itd.]
 
 list_of_dictionaries = [
