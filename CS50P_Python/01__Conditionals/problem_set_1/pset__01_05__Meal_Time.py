@@ -5,7 +5,7 @@ def main():
     if ":" in time:
         # jeśli godzina jest zapisana prawidłowo
 
-        hours = convert(time)
+        hours = convert_minutes_to_fractions(time)
 
         if hours >= 7 and hours <= 8:
             print("breakfast")
@@ -15,8 +15,7 @@ def main():
             print("dinner")
 
 
-def convert(time):
-
+def convert_minutes_to_fractions(time):
     chunks = time.split(":")
     hours = float(chunks[0]) + (float(chunks[1]) / 60)
     return hours
