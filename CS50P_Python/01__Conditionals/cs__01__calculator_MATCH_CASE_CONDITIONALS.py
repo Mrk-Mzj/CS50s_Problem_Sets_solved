@@ -26,7 +26,7 @@ def main():
 
 def cleaned(dirt):
       
-    #convering to string (f''), separating tousands with commas(:,), replacing commas with spaces, cleaning '.0'
+    #convering to string (f''), separating thousands with commas(:,), replacing commas with spaces, cleaning '.0'
     return (f'{dirt:,}').replace(',' , ' ').replace('.0' , '')
     
 
