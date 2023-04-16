@@ -1,7 +1,7 @@
 txt = input("\nCalculate x ? y:\n")
-math = txt.split(" ")
+math = txt.split(" ")   # zwraca listę 3 elementów w formacie [x,działanie,y]
 
-# sprawdzam czy user nie zapomniał o użyciu spacji
+# sprawdzam czy user nie zapomniał o użyciu spacji:
 if len(math) > 1:
 
     x = float(math[0])
