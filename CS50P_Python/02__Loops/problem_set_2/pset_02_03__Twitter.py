@@ -1,4 +1,6 @@
-# return text with all wovels omitted (A, E, I, O, and U).
+"""
+return text with all wovels omitted (A, E, I, O, and U).
+"""
 
 long_text = input("input your text: ")
 shrt_txt = ""

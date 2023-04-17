@@ -1,7 +1,9 @@
-# write sum that needs to be paid
-# accept only chosen coins, one at a time
-# end when sum=0
-# if sum <0 write change that will be returned by machine
+"""
+write sum that needs to be paid
+accept only chosen coins, one at a time
+end when sum=0
+if sum <0 write change that will be returned by machine
+"""
 
 accepted_coins = [5, 10, 25]
 sum = 50

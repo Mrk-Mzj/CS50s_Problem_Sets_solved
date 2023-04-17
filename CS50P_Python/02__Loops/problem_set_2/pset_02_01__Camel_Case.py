@@ -1,5 +1,7 @@
-# ask for camelCaseNamedVariable
-# convert it to snake_case_named_variable
+"""
+ask for camelCaseNamedVariable
+convert it to snake_case_named_variable
+"""
 
 snake_case_name = ""
 camelCaseName = input("camelCaseName: ")
