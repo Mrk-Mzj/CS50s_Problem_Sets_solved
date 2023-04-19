@@ -1,6 +1,7 @@
-# Zasymulujmy działanie wskaźnika paliwa. User podaje dwie liczby. Przeliczamy je na procenty.
-# Jeśli są spoza zakresu albo wywołuja błędy każemy mu je poprawić.
-# Jeśli wynik jest blisko zera lub blisko 100% piszemy E lub F.
+# Zasymulujmy działanie wskaźnika paliwa.
+# User podaje dwie liczby. Przeliczamy je na procenty.
+# Jeśli podane liczby są spoza zakresu, albo wywołują błędy, każemy userowi je poprawić.
+# Jeśli wynik jest blisko zera lub blisko 100%, piszemy E lub F.
 
 while True:
     try:
@@ -23,7 +24,7 @@ while True:
             elif percentage >= 99:
                 percentage = "F"
 
-            print(f"{x}/{y} = {percentage} %")
+            print(f"{x}/{y} = {percentage}%")
             break
 
     except ValueError:
