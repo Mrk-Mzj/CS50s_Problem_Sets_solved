@@ -18,14 +18,7 @@ months = [
 
 
 def main():
-    # date_cached = read_input()
-
-    # W tym momencie mamy zmienną przechowującą dokładnie 3 elementy. Nie wiemy jeszcze czy prawidłowe.
-    # TODO: sprawdzenie czy elementy są liczbami i czy z przedziałów.
-    # Można napisać funkcję przyjmującą parametry - przedziały. Jeśli zwróci False, uruchamiamy od nowa odpytywanie usera.
-
-    # date_sorted = sort(read_input())
-    date_iso = check(sort(read_input()))
+    date_iso = check_input(sort_input(read_input()))
 
     # ten zapis eliminuje drukowanie None. Kiedy mogłoby się zdarzyć?
     # Gdy występuje błąd w check() funkcja main() jest wywoływana ponownie, do skutku. Robi się rekurencja.
@@ -42,36 +35,36 @@ def read_input():
 
         # Załóżmy, że data zapisana jest w formacie 5/25/1955.
         # Spróbujmy podzielić wczytaną zmienną w miejscu "/":
-        date_cached = date_inputed.split("/")
+        date = date_inputed.split("/")
 
         # jeśli wyciągnęliśmy dokładnie 3 elementy, wyskakujemy z pętli
         # i przechodzimy do sprawdzenia danych:
-        if len(date_cached) == 3:
-            return date_cached
+        if len(date) == 3:
+            return date
 
         else:
             # Jeśli nie wyciągnęliśmy 3 elementów zakładamy,
             # że data zapisana jest w formacie 'May 25, 1955'.
             # Spróbujmy więc podzielić wczytaną zmienną w miejscu " ":
-            date_cached = date_inputed.split(" ")
+            date = date_inputed.split(" ")
 
             # Jeśli wyciągnęliśmy dokładnie 3 elementy...
-            if len(date_cached) == 3:
+            if len(date) == 3:
                 # usuńmy przecinek po numerze dnia
-                date_cached[1] = date_cached[1].replace(",", "")
+                date[1] = date[1].replace(",", "")
 
                 # i spróbujmy skonwertować nazwę miesiąca, zapisaną słownie, na liczbę.
                 # Liczba to pozycja na liście miesięcy + 1.
                 # Konwertuję ją na str, by pasowała do date_cached - która zawiera stringi.
                 try:
-                    date_cached[0] = str(months.index(date_cached[0]) + 1)
-                    return date_cached
+                    date[0] = str(months.index(date[0]) + 1)
+                    return date
 
                 except:
                     pass
 
 
-def sort(date_cached):
+def sort_input(date_cached):
     # Sortowanie daty we właściwej kolejności:
     date_sorted = []
     date_sorted.append(date_cached[1])
@@ -81,7 +74,7 @@ def sort(date_cached):
     return date_sorted
 
 
-def check(date_sorted):
+def check_input(date_sorted):
     # sprawdza czy elementy są liczbami i czy z przedziałów.
     # jeśli nie, odpytaj ponownie:
 
