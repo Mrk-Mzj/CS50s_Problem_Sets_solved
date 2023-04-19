@@ -55,25 +55,20 @@ def read_input():
             # Spróbujmy więc podzielić wczytaną zmienną w miejscu " ":
             date_cached = date_inputed.split(" ")
 
-            # Przyjmijmy, że numer dnia został podany zgodnie z instrukcją
-            # i zapisał się z przecinkiem; czyszczę przecinek:
-
-            try:
+            # Jeśli wyciągnęliśmy dokładnie 3 elementy...
+            if len(date_cached) == 3:
+                # usuńmy przecinek po numerze dnia
                 date_cached[1] = date_cached[1].replace(",", "")
 
-                # jeśli metoda zwróciła 3 elementy, skonwertuj miesiąc na liczbę i wyskocz z pętli
-                if len(date_cached) == 3:
-                    try:
-                        # konwersja: numer miesiąca to pozycja na liście months + 1:
-                        date_cached[0] = str(months.index(date_cached[0]) + 1)
-                        return date_cached
+                # i spróbujmy skonwertować nazwę miesiąca, zapisaną słownie, na liczbę.
+                # Liczba to pozycja na liście miesięcy + 1.
+                # Konwertuję ją na str, by pasowała do date_cached - która zawiera stringi.
+                try:
+                    date_cached[0] = str(months.index(date_cached[0]) + 1)
+                    return date_cached
 
-                    except:
-                        pass
-
-            # jeśli 2 element nie istnieje, rozpoczniemy odpytywanie usera od nowa:
-            except IndexError:
-                pass
+                except:
+                    pass
 
 
 def sort(date_cached):
@@ -87,7 +82,7 @@ def sort(date_cached):
 
 
 def check(date_sorted):
-    #  sprawdza czy elementy są liczbami i czy z przedziałów.
+    # sprawdza czy elementy są liczbami i czy z przedziałów.
     # jeśli nie, odpytaj ponownie:
 
     try:
