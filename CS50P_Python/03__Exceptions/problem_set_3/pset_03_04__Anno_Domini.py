@@ -18,7 +18,6 @@ months = [
 
 
 def main():
-
     # date_cached = read_input()
 
     # W tym momencie mamy zmienną przechowującą dokładnie 3 elementy. Nie wiemy jeszcze czy prawidłowe.
@@ -36,25 +35,25 @@ def main():
 
 
 def read_input():
-    # zwraca listę z dokładnie 3 elementami Str
+    # zwraca listę z dokładnie trzema (niesprawdzonymi) elementami Str
 
     while True:
-
         date_inputed = input("Input date as 5/25/1955 or May 25, 1955\n")
 
-        # zapisujemy METODĄ 1:
+        # Zakłóżmy, że data zapisana jest w formacie 5/25/1955.
+        # Spróbujmy podzielić wczytaną zmienną w miejscu "/":
         date_cached = date_inputed.split("/")
 
-        # jeśli sczytaliśmy 3 elementy: sukces, wyskakujemy z pętli
+        # jeśli sczytaliśmy dokładnie 3 elementy, sukces, wyskakujemy z pętli:
         if len(date_cached) == 3:
             return date_cached
 
-        # jeśli nie: porażka. Zczytujemy METODĄ 2:
+        # jeśli nie - zakładamy, że data zapisana jest w formacie 'May 25, 1955':
         else:
-
+            # Spróbujmy podzielić wczytaną zmienną w miejscu " ":
             date_cached = date_inputed.split(" ")
 
-            # przyjmuję, że numer dnia został podany zgodnie z instrukcją
+            # Przyjmijmy, że numer dnia został podany zgodnie z instrukcją
             # i zapisał się z przecinkiem; czyszczę przecinek:
 
             try:
@@ -62,7 +61,6 @@ def read_input():
 
                 # jeśli metoda zwróciła 3 elementy, skonwertuj miesiąc na liczbę i wyskocz z pętli
                 if len(date_cached) == 3:
-
                     try:
                         # konwersja: numer miesiąca to pozycja na liście months + 1:
                         date_cached[0] = str(months.index(date_cached[0]) + 1)
@@ -71,13 +69,12 @@ def read_input():
                     except:
                         pass
 
-            # jeśli nie istnieje 2 element
+            # jeśli 2 element nie istnieje, rozpoczniemy odpytywanie usera od nowa:
             except IndexError:
                 pass
 
 
 def sort(date_cached):
-
     # Sortowanie daty we właściwej kolejności:
     date_sorted = []
     date_sorted.append(date_cached[1])
