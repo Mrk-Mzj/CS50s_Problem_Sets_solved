@@ -15,17 +15,6 @@ while True:
         if percentage > 100:
             print("\nX must be less than Y.\n")
 
-        else:
-            # Input nie wywołał błędów i mieści się w zakresie,
-            # kończymy program i wyskakujemy z pętli while:
-            if percentage <= 1:
-                percentage = "E"
-
-            elif percentage >= 99:
-                percentage = "F"
-
-            print(f"{x}/{y} = {percentage}%")
-            break
 
     except ValueError:
         print("\nYou have to input two integers in X/Y format.\n")
@@ -38,3 +27,17 @@ while True:
     except ZeroDivisionError:
         print("\nY must not be 0!\n")
         pass
+
+
+    else:
+        # Input nie wywołał błędów i mieści się w zakresie,
+        # kończymy program i wyskakujemy z pętli while:
+        if percentage <= 1:
+            percentage = "E"
+
+        elif percentage >= 99:
+            percentage = "F"
+
+        print(f"{x}/{y} = {percentage}%")
+        break
+    
