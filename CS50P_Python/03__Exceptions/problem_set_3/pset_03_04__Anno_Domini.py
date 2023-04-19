@@ -35,22 +35,24 @@ def main():
 
 
 def read_input():
-    # zwraca listę z dokładnie trzema (niesprawdzonymi) elementami Str
+    # zwraca listę z dokładnie trzema elementami, które powinny być liczbami. Czy są - to sprawdzi osobna funkcja.
 
     while True:
         date_inputed = input("Input date as 5/25/1955 or May 25, 1955\n")
 
-        # Zakłóżmy, że data zapisana jest w formacie 5/25/1955.
+        # Załóżmy, że data zapisana jest w formacie 5/25/1955.
         # Spróbujmy podzielić wczytaną zmienną w miejscu "/":
         date_cached = date_inputed.split("/")
 
-        # jeśli sczytaliśmy dokładnie 3 elementy, sukces, wyskakujemy z pętli:
+        # jeśli wyciągnęliśmy dokładnie 3 elementy, wyskakujemy z pętli
+        # i przechodzimy do sprawdzenia danych:
         if len(date_cached) == 3:
             return date_cached
 
-        # jeśli nie - zakładamy, że data zapisana jest w formacie 'May 25, 1955':
         else:
-            # Spróbujmy podzielić wczytaną zmienną w miejscu " ":
+            # Jeśli nie wyciągnęliśmy 3 elementów zakładamy,
+            # że data zapisana jest w formacie 'May 25, 1955'.
+            # Spróbujmy więc podzielić wczytaną zmienną w miejscu " ":
             date_cached = date_inputed.split(" ")
 
             # Przyjmijmy, że numer dnia został podany zgodnie z instrukcją
