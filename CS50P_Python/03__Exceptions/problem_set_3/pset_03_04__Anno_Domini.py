@@ -1,5 +1,5 @@
 # Przyjmij datę w formacie 9/8/1636 lub September 8, 1636.
-# Skonwertuj i wydrukuj w formacie YYYY-MM-DD. Obsłuż błędy.
+# Skonwertuj i wydrukuj w formacie DD-MM-YYYY. Obsłuż błędy.
 
 months = [
     "January",
@@ -18,13 +18,15 @@ months = [
 
 
 def main():
-    date_iso = check_input(sort_input(read_input()))
+    # wczytaj dane
+    input = read_input()
 
-    # ten zapis eliminuje drukowanie None. Kiedy mogłoby się zdarzyć?
-    # Gdy występuje błąd w check() funkcja main() jest wywoływana ponownie, do skutku. Robi się rekurencja.
-    # Po otrzymaniu wlaściwej daty drukuje się data i None dla każdego z błędów. Ta linia temu zapobiega.
-    if date_iso:
-        print(date_iso)
+    # jeśli wczytane dane są prawidłowe, posortuj je i wydrukuj
+    if check(input) == True:
+        print(sort(input))
+
+    else:
+        main()
 
 
 def read_input():
@@ -64,32 +66,33 @@ def read_input():
                     pass
 
 
-def sort_input(date_cached):
-    # Sortowanie daty we właściwej kolejności:
-    date_sorted = []
-    date_sorted.append(date_cached[1])
-    date_sorted.append(date_cached[0])
-    date_sorted.append(date_cached[2])
-
-    return date_sorted
-
-
-def check_input(date_sorted):
-    # sprawdza czy elementy są liczbami i czy z przedziałów.
-    # jeśli nie, odpytaj ponownie:
+def check(input):
+    # Sprawdza czy elementy są liczbami całkowitymi i czy z właściwych przedziałów.
+    # Zwraca True dla poprawnych liczb, i False dla błędu.
 
     try:
         if (
-            (1 <= int(date_sorted[0]) <= 31)
-            and (1 <= int(date_sorted[1]) <= 12)
-            and (0 <= int(date_sorted[2]) <= 2222)
+            (1 <= int(input[0]) <= 12)  # miesiąc
+            and (1 <= int(input[1]) <= 31)  # dzień
+            and (0 <= int(input[2]) <= 2222)  # rok
         ):
-            return date_sorted
+            return True
+
         else:
-            main()
+            return False
 
     except ValueError:
-        main()
+        return False
+
+
+def sort(input):
+    # Sortowanie daty we właściwej kolejności:
+    date_sorted = []
+    date_sorted.append(input[1])
+    date_sorted.append(input[0])
+    date_sorted.append(input[2])
+
+    return date_sorted
 
 
 if __name__ == "__main__":
