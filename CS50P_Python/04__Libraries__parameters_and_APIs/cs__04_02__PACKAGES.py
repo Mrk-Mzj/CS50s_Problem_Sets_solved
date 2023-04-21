@@ -1,7 +1,7 @@
 """ 
 instalujemy pakiet Cowsay (zewnętrzny folder z modułami) poleceniem: "pip install cowsay". Więcej ciekawych pakietów na PyPI.org
 uruchamiamy z konsoli: 
-cs__04_02__PACKAGES.py"
+python cs__04_02__PACKAGES.py"
 """
 
 import cowsay
