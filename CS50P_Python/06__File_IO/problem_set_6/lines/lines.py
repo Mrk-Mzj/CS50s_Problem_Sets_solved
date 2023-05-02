@@ -24,4 +24,18 @@ if (
 ):
     sys.exit("you must add file name as a parameter")
 
-print("next")
+
+lines_of_code_count = 0
+
+with open(path + sys.argv[1], "r") as file:
+    print()
+
+    for line in file:
+        # ignore blank lines and comments; lstrip allows to ignore indented comments
+        if line.isspace() or line.lstrip().startswith("#"):
+            print(f"ignored: {line}", end="")
+            pass
+        else:
+            lines_of_code_count += 1
+
+print("\nLines of code:", lines_of_code_count)
