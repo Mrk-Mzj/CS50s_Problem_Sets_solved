@@ -13,21 +13,21 @@ Assume that any line that starts with #, optionally preceded by whitespace, is a
 
 import sys, os.path
 
-path = "CS50P_Python/06__File_IO/problem_set_6/lines/"
+PATH = "CS50P_Python/06__File_IO/problem_set_6/lines/"
 
 
 # check if: file was run with 1 parameter, ending with .py, and pointing to a file that exists:
 if (
     len(sys.argv) != 2
     or not sys.argv[1].endswith(".py")
-    or not os.path.isfile(path + sys.argv[1])
+    or not os.path.isfile(PATH + sys.argv[1])
 ):
     sys.exit("you must add file name as a parameter")
 
 
 lines_of_code_count = 0
 
-with open(path + sys.argv[1], "r") as file:
+with open(PATH + sys.argv[1], "r") as file:
     print()
 
     for line in file:
