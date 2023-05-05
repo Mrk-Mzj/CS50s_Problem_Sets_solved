@@ -20,7 +20,6 @@ the program should exit via sys.exit with an error message.
 import sys, os.path, csv
 
 PATH = "CS50P_Python/06__File_IO/problem_set_6/scourgify/"
-students = []
 
 
 # check if user specified two arguments, and if the first one is readlible
@@ -39,12 +38,14 @@ if (
 with open(PATH + sys.argv[1], "r") as file:
     reader = csv.DictReader(file)
 
-    for line in reader:
-        # creating table of tables,
-        # splitting names in quotes, clearing spaces
-        name = line["name"].split(",")
-        students.append([name[1].strip(), name[0], line["house"]])
+    # saving new file at the same time. This way we avoid reading all lines into variable
+    # just to read them all again to save a file.
 
+    # 'new lines' are turned off in 'open' to avoid doubles, because writer adds their own.
+    with open(PATH + sys.argv[2], "w", newline="") as file:
+        writer = csv.writer(file)
 
-# TODO: saving "after.csv" file - best do in the same loop, as reading "before.csv"
-print("\n", students)
+        for line in reader:
+            # splitting names in quotes, clearing spaces
+            name = line["name"].split(",")
+            writer.writerow([name[1].strip(), name[0], line["house"]])
