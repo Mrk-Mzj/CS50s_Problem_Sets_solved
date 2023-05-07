@@ -25,11 +25,14 @@ The program should instead exit via sys.exit:
 - if the input’s name does not have the same extension as the output’s name, or
 - if the specified input does not exist.
 """
+# pip install --upgrade pip
+# pip install Pillow --upgrade
+
 # python CS50P_Python/06__File_IO/problem_set_6/shirt/shirt.py before1.jpg after1.jpg
 
 
-import sys, os.path
-from PIL import Image
+import sys, os.path, PIL.ImageOps, PIL.Image
+
 
 PATH = "CS50P_Python/06__File_IO/problem_set_6/shirt/"
 EXTENSIONS = ("jpg", "jpeg", "png")
@@ -49,5 +52,15 @@ if (
         "\nYou must add valid input jpg / jpeg / png file as the 1st parameter, and output file as the 2nd parameter"
     )
 
+# open input
+img = PIL.Image.open(PATH + sys.argv[1], mode="r", formats=None)
+
+# resize and crop input to shirt.py size
+PIL.ImageOps.fit(
+    img, (600, 600), method=PIL.Image.Resampling.BICUBIC, bleed=0.0, centering=(0.5, 0.5)
+)
+
 print("good!")
-# TODO: working with PIL images
+
+# TODO: overlay
+# TODO: save output
