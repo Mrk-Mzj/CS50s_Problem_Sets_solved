@@ -52,15 +52,17 @@ if (
         "\nYou must add valid input jpg / jpeg / png file as the 1st parameter, and output file as the 2nd parameter"
     )
 
-# open input
-img = PIL.Image.open(PATH + sys.argv[1], mode="r", formats=None)
+# open input and overlay images
+img_input = PIL.Image.open(PATH + sys.argv[1], mode="r", formats=None)
+img_overlay = PIL.Image.open(PATH + "shirt.png", mode="r", formats=None)
 
 # resize and crop input to shirt.py size
-PIL.ImageOps.fit(
-    img, (600, 600), method=PIL.Image.Resampling.BICUBIC, bleed=0.0, centering=(0.5, 0.5)
+img_processed = PIL.ImageOps.fit(
+    img_input, (600, 600), method=PIL.Image.Resampling.BICUBIC, bleed=0.0, centering=(0.5, 0.5)
 )
+# overlay
+img_processed.paste(img_overlay, box=None, mask=img_overlay)
 
-print("good!")
-
-# TODO: overlay
-# TODO: save output
+# save output and show the result
+img_processed.save(PATH + sys.argv[2])
+img_processed.show()
