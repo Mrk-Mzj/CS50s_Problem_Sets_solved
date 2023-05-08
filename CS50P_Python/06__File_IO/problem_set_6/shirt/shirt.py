@@ -54,7 +54,13 @@ if (
 
 # open input and overlay images
 img_input = PIL.Image.open(PATH + sys.argv[1], mode="r", formats=None)
-img_overlay = PIL.Image.open(PATH + "shirt.png", mode="r", formats=None)
+
+try:
+    img_overlay = PIL.Image.open(PATH + "shirt.png", mode="r", formats=None)
+except FileNotFoundError:
+    sys.exit(
+        "\nError: shirt.png not found"
+    )
 
 # resize and crop input to shirt.py size
 img_processed = PIL.ImageOps.fit(
