@@ -10,13 +10,13 @@ Format the table using the library’s grid format.
 If the user does not specify exactly one command-line argument, or if the specified file’s name does not end in .csv, 
 or if the specified file does not exist, the program should instead exit via sys.exit.
 """
-# python CS50P_Python/06__File_IO/problem_set_6/pizza_py/pizza.py regular.csv
+# python ../CS50s_Problem_Sets_solved/CS50P_Python/06__File_IO/problem_set_6/pizza_py/pizza.py regular.csv
 
 
 import sys
 from tabulate import tabulate
 
-PATH = "CS50P_Python/06__File_IO/problem_set_6/pizza_py/"
+PATH = "../CS50s_Problem_Sets_solved/CS50P_Python/06__File_IO/problem_set_6/pizza_py/"
 table = []
 
 
