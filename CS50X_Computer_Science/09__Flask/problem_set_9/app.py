@@ -21,23 +21,8 @@ from flask_session import Session
 from tempfile import mkdtemp
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from helpers import apology, login_required, lookup, usd, id, password_check
-from db import (
-    cash_of,
-    check_username,
-    delete_sum_up,
-    read_history,
-    password_update,
-    possessions_of,
-    read_sum_up,
-    rows_of_id,
-    rows_of_username,
-    save_balance,
-    save_purchase,
-    save_sum_up,
-    save_user,
-    update_sum_up,
-)
+from helpers import *
+from db import *
 
 
 # Configure application
@@ -81,7 +66,6 @@ def change_password():
     """Change password"""
 
     if request.method == "POST":
-
         old_password = request.form.get("old_password")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
@@ -151,7 +135,6 @@ def index():
     # Te dane dopisuję do poprzednich. Wylądują w 3 i 4 kolumnie tabeli na www.
 
     for possession in possessions:
-
         # odpytujemy API o zestaw danych dla aktualnie sprawdzanej spółki
         current = lookup(possession["of_company"])
 
@@ -186,7 +169,6 @@ def buy():
 
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
-
         # sprawdź czy podano symbol
         symbol = request.form.get("symbol")
         if not symbol:
@@ -262,7 +244,6 @@ def login():
 
     # User reached route via POST (as by submitting a form via POST)
     if request.method == "POST":
-
         username = request.form.get("username")
         password = request.form.get("password")
 
@@ -315,7 +296,6 @@ def quote():
 
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
-
         # sprawdzenie czy podano symbol
         symbol = request.form.get("symbol")
         if not symbol:
@@ -340,7 +320,6 @@ def register():
     """Register user"""
 
     if request.method == "POST":
-
         username = request.form.get("username")
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
@@ -394,7 +373,6 @@ def sell():
 
     # jeśli user podał symbol szukanej spółki:
     if request.method == "POST":
-
         # sprawdź czy podano symbol
         symbol = request.form.get("symbol")
         if not symbol:
