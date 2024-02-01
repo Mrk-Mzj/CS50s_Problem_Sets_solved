@@ -6,6 +6,8 @@
 
 {% block body %}
 
-<p>{{ content }}</p>
+<!-- declaring this block as safe 
+    to allow injecting HTML (converted from markdown) -->
+{{ content|safe }}
 
 {% endblock %}
