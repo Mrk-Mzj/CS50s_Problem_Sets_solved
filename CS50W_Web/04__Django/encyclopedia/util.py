@@ -2,6 +2,8 @@ import re
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.shortcuts import render
+import markdown2
 
 
 def list_entries():
@@ -32,7 +34,7 @@ def save_entry(title, content):
 
 def get_entry(title):
     """
-    Retrieves an encyclopedia entry by its title. If no such
+    Retrieves an encyclopedia entry from file by its title. If no such
     entry exists, the function returns None.
     """
     try:
@@ -40,3 +42,17 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+
+def render_entry(request, title):
+    """
+    Renders entry page for the browser.
+    """
+    return render(
+        request,
+        "encyclopedia/entry.html",
+        {
+            "title": title,
+            "content": markdown2.markdown(get_entry(title)),
+        },
+    )
