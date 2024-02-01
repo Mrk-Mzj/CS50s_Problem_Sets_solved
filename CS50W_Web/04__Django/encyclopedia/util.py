@@ -6,11 +6,16 @@ from django.core.files.storage import default_storage
 
 def list_entries():
     """
-    Returns a list of all names of encyclopedia entries.
+    Returns a sorted list of all names of encyclopedia entries without their extensions.
     """
     _, filenames = default_storage.listdir("entries")
-    return list(sorted(re.sub(r"\.md$", "", filename)
-                for filename in filenames if filename.endswith(".md")))
+    return list(
+        sorted(
+            re.sub(r"\.md$", "", filename)
+            for filename in filenames
+            if filename.endswith(".md")
+        )
+    )
 
 
 def save_entry(title, content):
