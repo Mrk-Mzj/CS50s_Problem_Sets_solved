@@ -1,8 +1,9 @@
+from random import randrange
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 
 from . import util
-import markdown2
 
 
 def index(request):
@@ -21,6 +22,13 @@ def entry(request, title):
             "encyclopedia/entry.html",
             {"title": "404 - no entry", "content": "404 - no entry found"},
         )
+
+
+def random(request):
+    # show random entry
+    no = randrange(0, len(util.list_entries()))
+    title = util.list_entries()[no]
+    return util.render_entry(request, title)
 
 
 def search(request):
