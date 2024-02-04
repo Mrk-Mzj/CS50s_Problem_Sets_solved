@@ -9,13 +9,17 @@ import markdown2
 def list_entries():
     """
     Returns a sorted list of all names of encyclopedia entries without their extensions.
+    Lambda function assures that list is not separated to uppercase sorted first and lowercase sorted later - but mix them together.
     """
     _, filenames = default_storage.listdir("entries")
     return list(
         sorted(
-            re.sub(r"\.md$", "", filename)
-            for filename in filenames
-            if filename.endswith(".md")
+            (
+                re.sub(r"\.md$", "", filename)
+                for filename in filenames
+                if filename.endswith(".md")
+            ),
+            key=lambda v: v.upper(),
         )
     )
 
@@ -29,7 +33,7 @@ def save_entry(title, content):
     filename = f"entries/{title}.md"
     if default_storage.exists(filename):
         default_storage.delete(filename)
-    default_storage.save(filename, ContentFile(content))
+    default_storage.save(filename, ContentFile(content.encode("utf-8")))
 
 
 def get_entry(title):
