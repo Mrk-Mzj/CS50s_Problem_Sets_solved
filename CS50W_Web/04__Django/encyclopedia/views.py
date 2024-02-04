@@ -59,7 +59,7 @@ def edit(request):
     return render(
         request,
         "encyclopedia/edit.html",
-        {"title": title, "form": EditEntry()},
+        {"title": title, "form": EditEntry(initial={"content": util.get_entry(title)})},
     )
 
 
