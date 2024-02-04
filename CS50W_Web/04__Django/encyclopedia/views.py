@@ -7,6 +7,14 @@ from django.shortcuts import render
 from . import util
 
 
+class EditEntry(forms.Form):
+    # object transporing content data
+    # from and to form in new_edit.html
+    content = forms.CharField(
+        widget=forms.Textarea(attrs={"style": "width: 60em; height: 40em;"})
+    )
+
+
 class NewEntry(forms.Form):
     # object transporing content and title data
     # from and to form in new_edit.html
@@ -18,6 +26,41 @@ class NewEntry(forms.Form):
 
 def index(request):
     return render(request, "encyclopedia/index.html", {"entries": util.list_entries()})
+
+
+def edit(request):
+
+    # save eddited entry (POST)
+    if request.method == "POST":
+        filled = EditEntry(request.POST)
+
+        # if form is ok
+        if filled.is_valid():
+            # user sent correctly filled form - saving entry file
+            # title = filled.cleaned_data["title"]
+            title = request.POST["title"]
+            content = filled.cleaned_data["content"]
+            util.save_entry(title, content)
+            # send user to the entry page
+            return util.render_entry(request, title)
+        else:
+            # user sent incorrect filled form - showing him form again
+            return render(
+                request,
+                "encyclopedia/edit.html",
+                {
+                    "form": filled,
+                    "error": "Error: incorrect data",
+                },
+            )
+
+    # edit entry (GET)
+    title = request.GET["title"]
+    return render(
+        request,
+        "encyclopedia/edit.html",
+        {"title": title, "form": EditEntry()},
+    )
 
 
 def entry(request, title):
@@ -51,12 +94,19 @@ def new(request):
             util.save_entry(title, content)
         else:
             # user sent incorrect filled form - showing him form again
-            return render(request, "encyclopedia/new_edit.html", {"form": filled, "error": "Error: incorrect data or entry already exists"})
+            return render(
+                request,
+                "encyclopedia/new.html",
+                {
+                    "form": filled,
+                    "error": "Error: incorrect data or entry already exists",
+                },
+            )
 
     # write a new entry (GET)
     return render(
         request,
-        "encyclopedia/new_edit.html",
+        "encyclopedia/new.html",
         {"title": "Create new entry", "form": NewEntry()},
     )
 
