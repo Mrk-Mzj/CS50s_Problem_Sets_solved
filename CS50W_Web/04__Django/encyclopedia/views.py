@@ -10,18 +10,14 @@ from . import util
 class EditEntry(forms.Form):
     # object transporing content data
     # from and to form in new_edit.html
-    content = forms.CharField(
-        widget=forms.Textarea(attrs={"style": "width: 60em; height: 40em;"})
-    )
+    content = forms.CharField(widget=forms.Textarea())
 
 
 class NewEntry(forms.Form):
     # object transporing content and title data
     # from and to form in new_edit.html
     title = forms.CharField(label="Title")
-    content = forms.CharField(
-        widget=forms.Textarea(attrs={"style": "width: 60em; height: 40em;"})
-    )
+    content = forms.CharField(widget=forms.Textarea())
 
 
 def index(request):

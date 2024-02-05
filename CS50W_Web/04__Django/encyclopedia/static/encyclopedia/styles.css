@@ -13,8 +13,14 @@ h1 {
 }
 
 textarea {
-    height: 90vh;
-    width: 80%;
+    width: 60em;
+    height: 40em;
+}
+
+/* moving button to the right */
+input[type=submit] {
+    position: relative;
+    left: 60em;
 }
 
 .main {
